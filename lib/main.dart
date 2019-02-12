@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w400),
           title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500),
@@ -118,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         .copyWith(color: Colors.white.withOpacity(0.7)),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 52.0),
+                    margin: EdgeInsets.only(top: 42.0),
                     child: Text(
                       'TODAY : FEBURARY 13, 2019',
                       style: Theme.of(context)
@@ -131,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
-              flex: 6,
+              flex: 1,
               child: NotificationListener<ScrollNotification>(
                 onNotification: (notification) {
                   if (notification is ScrollEndNotification) {
@@ -151,17 +150,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       elevation: 4.0,
                       margin:
-                          EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                          EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
                       color: Colors.white,
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: 26.0, horizontal: 16.0),
+                            vertical: 16.0, horizontal: 16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Container(
                               padding: EdgeInsets.all(8.0),
+                              margin: EdgeInsets.only(
+                                bottom: 6.0,
+                              ),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
@@ -176,7 +178,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                 color: widget.todos[index]["color"],
                               ),
                             ),
-                            Spacer(),
+                            Spacer(
+                              flex: 8,
+                            ),
                             Container(
                               margin: EdgeInsets.only(bottom: 4.0),
                               child: Text(
@@ -188,13 +192,13 @@ class _MyHomePageState extends State<MyHomePage> {
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(bottom: 32.0),
                               child: Text('Work',
                                   style: Theme.of(context)
                                       .textTheme
                                       .title
                                       .copyWith(color: Colors.black54)),
                             ),
+                            Spacer(),
                             TaskProgressIndicator(
                               color: widget.todos[index]["color"],
                               progress: widget.todos[index]["progress"],
@@ -208,9 +212,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-            Spacer(
-              flex: 1,
-            )
+            Container(
+              margin: EdgeInsets.only(bottom: 68.0),
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(
