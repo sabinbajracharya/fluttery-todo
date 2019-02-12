@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        fontFamily: 'Montserrat',
+
         textTheme: TextTheme(
-          headline: TextStyle(fontSize: 36.0, fontWeight: FontWeight.w500),
+          headline: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w400),
           title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500),
           body1: TextStyle(
             fontSize: 14.0,
@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
-  var todos = [
+  final todos = [
     {
       "code_point": 0xe878,
       "progress": 60.0,
@@ -87,16 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 52.0, bottom: 16.0),
-              padding: EdgeInsets.only(left: 52.0),
+              margin: EdgeInsets.only(top: 36.0, left: 56.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   ShadowImage(),
                   Container(
-                    margin: EdgeInsets.only(top: 22.0, bottom: 8.0),
+                    margin: EdgeInsets.only(top: 22.0, bottom: 12.0),
                     child: Text(
-                      'Hello, Sabin.',
+                      'Hello, Jane.',
                       style: Theme.of(context)
                           .textTheme
                           .headline
@@ -110,12 +109,23 @@ class _MyHomePageState extends State<MyHomePage> {
                         .body1
                         .copyWith(color: Colors.white.withOpacity(0.7)),
                   ),
+                  Container(height: 4.0),
                   Text(
                     'You have 3 tasks to do today.',
                     style: Theme.of(context)
                         .textTheme
                         .body1
                         .copyWith(color: Colors.white.withOpacity(0.7)),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 52.0),
+                    child: Text(
+                      'TODAY : FEBURARY 13, 2019',
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle
+                          .copyWith(color: Colors.white.withOpacity(0.8)),
+                    ),
                   ),
                 ],
               ),
