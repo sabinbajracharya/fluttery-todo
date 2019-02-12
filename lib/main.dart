@@ -156,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.grey.shade100,
-                                )
+                                ),
                               ),
                               child: Icon(
                                 IconData(
@@ -205,7 +205,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _incrementCounter,
-          tooltip: 'Increment',
+          tooltip: 'New Todo',
+          backgroundColor: Colors.white,
+          foregroundColor: color,
           child: Icon(Icons.add),
         ),
       ),
