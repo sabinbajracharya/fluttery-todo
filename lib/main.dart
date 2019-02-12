@@ -36,14 +36,17 @@ class MyHomePage extends StatefulWidget {
 
   var todos = [
     {
+      "code_point": 0xe878,
       "progress": 60.0,
       "color": Colors.blue,
     },
     {
+      "code_point": 0xe7fd,
       "progress": 40.0,
       "color": Colors.green,
     },
     {
+      "code_point": 0xe854,
       "progress": 90.0,
       "color": Colors.orange,
     },
@@ -137,14 +140,33 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                       elevation: 4.0,
-                      margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+                      margin:
+                          EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
                       color: Colors.white,
                       child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 26.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 26.0, horizontal: 16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.grey.shade100,
+                                )
+                              ),
+                              child: Icon(
+                                IconData(
+                                  widget.todos[index]["code_point"],
+                                  fontFamily: 'MaterialIcons',
+                                ),
+                                color: widget.todos[index]["color"],
+                              ),
+                            ),
+                            Spacer(),
                             Container(
                               margin: EdgeInsets.only(bottom: 4.0),
                               child: Text(
@@ -163,7 +185,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                       .title
                                       .copyWith(color: Colors.black54)),
                             ),
-                            TaskProgressIndicator(color: widget.todos[index]["color"], progress:  widget.todos[index]["progress"],)
+                            TaskProgressIndicator(
+                              color: widget.todos[index]["color"],
+                              progress: widget.todos[index]["progress"],
+                            )
                           ],
                         ),
                       ),
