@@ -134,7 +134,7 @@ class _DetailScreenState extends State<DetailScreen>
                         tag: widget.heroIds.progressId,
                         child: TaskProgressIndicator(
                           color: widget.color,
-                          progress: widget.progress,
+                          progress: model.taskCompletionPercent(),
                         ),
                       )
                     ],

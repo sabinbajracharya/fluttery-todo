@@ -44,4 +44,11 @@ class TodoListModel extends Model {
     _todos.replaceRange(replaceIndex, replaceIndex + 1, [todo]);
     notifyListeners();
   }
+
+  int taskCompletionPercent() {
+    var totalTask = todos.length;
+    var totalCompletedTask = todos.where((it) => it.isCompleted).length;
+    return (totalCompletedTask / totalTask * 100).toInt();
+    // return todos.fold(0, (total, todo) => todo.isCompleted ? total + scoreOfTask : total);
+  }
 }
