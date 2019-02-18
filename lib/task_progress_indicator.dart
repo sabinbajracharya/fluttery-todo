@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TaskProgressIndicator extends StatelessWidget {
-  final MaterialColor color;
+  final Color color;
   final progress;
 
   final _height = 3.0;

@@ -7,19 +7,14 @@ import 'package:todo/task_progress_indicator.dart';
 import 'package:todo/component/todo_badge.dart';
 import 'package:todo/model/hero_id_model.dart';
 import 'package:todo/model/todo_model.dart';
+import 'package:todo/utils/color_utils.dart';
 
 class DetailScreen extends StatefulWidget {
-  final double progress;
-  final Color color;
-  final int codePoint;
-  final int id;
+  final int taskId;
   final HeroId heroIds;
 
   DetailScreen({
-    @required this.codePoint,
-    @required this.color,
-    @required this.progress,
-    @required this.id,
+    @required this.taskId,
     @required this.heroIds,
   });
 
@@ -78,8 +73,11 @@ class _DetailScreenState extends State<DetailScreen>
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
+        var _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
+        var _todos = model.todos.where((it) => it.parent == widget.taskId).toList();
+        var _hero = widget.heroIds;
         return Theme(
-          data: ThemeData(primarySwatch: widget.color),
+          data: ThemeData(primarySwatch: ColorUtils.getColorFrom(id: _task.color)),
           child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -99,9 +97,9 @@ class _DetailScreenState extends State<DetailScreen>
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TodoBadge(
-                        color: widget.color,
-                        codePoint: widget.codePoint,
-                        id: widget.heroIds.codePointId,
+                        color: ColorUtils.getColorFrom(id: _task.color),
+                        codePoint: _task.codePoint,
+                        id: _hero.codePointId,
                       ),
                       Spacer(
                         flex: 1,
@@ -109,9 +107,9 @@ class _DetailScreenState extends State<DetailScreen>
                       Container(
                         margin: EdgeInsets.only(bottom: 4.0),
                         child: Hero(
-                          tag: widget.heroIds.remainingTaskId,
+                          tag: _hero.remainingTaskId,
                           child: Text(
-                            '12 Tasks',
+                            "${model.getTotalTodosFrom(task: _task)} Task",
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
@@ -121,8 +119,8 @@ class _DetailScreenState extends State<DetailScreen>
                       ),
                       Container(
                         child: Hero(
-                          tag: widget.heroIds.titleId,
-                          child: Text('Work',
+                          tag: _hero.titleId,
+                          child: Text(_task.name,
                               style: Theme.of(context)
                                   .textTheme
                                   .title
@@ -131,10 +129,10 @@ class _DetailScreenState extends State<DetailScreen>
                       ),
                       Spacer(),
                       Hero(
-                        tag: widget.heroIds.progressId,
+                        tag: _hero.progressId,
                         child: TaskProgressIndicator(
-                          color: widget.color,
-                          progress: model.taskCompletionPercent(),
+                          color: ColorUtils.getColorFrom(id: _task.color),
+                          progress: model.getTaskCompletionPercent(_task),
                         ),
                       )
                     ],
@@ -147,31 +145,31 @@ class _DetailScreenState extends State<DetailScreen>
                       position: _animation,
                       child: ListView.builder(
                         itemBuilder: (BuildContext context, int index) {
-                          var todo = model.todos[index];
+                          var todo = _todos[index];
                           return Container(
                             padding: EdgeInsets.only(left: 22.0, right: 22.0),
                             child: ListTile(
                               onTap: () => model.updateTodo(
-                                  todo.copy(isCompleted: !todo.isCompleted)),
+                                  todo.copy(isCompleted: todo.isCompleted == 1 ? 0 : 1)),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 8.0),
                               leading: Checkbox(
                                   onChanged: (value) => model.updateTodo(
-                                      todo.copy(isCompleted: value)),
-                                  value: todo.isCompleted),
+                                      todo.copy(isCompleted: value ? 1 : 0)),
+                                  value: todo.isCompleted == 1 ? true : false),
                               trailing: IconButton(
                                 icon: Icon(Icons.delete_outline),
                                 onPressed: () => model.removeTodo(todo),
                               ),
                               title: Text(
-                                todo.text,
+                                todo.name,
                                 style: TextStyle(
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w600,
-                                  color: todo.isCompleted
-                                      ? widget.color
+                                  color: todo.isCompleted == 1
+                                      ? ColorUtils.getColorFrom(id: _task.color)
                                       : Colors.black54,
-                                  decoration: todo.isCompleted
+                                  decoration: todo.isCompleted == 1
                                       ? TextDecoration.lineThrough
                                       : TextDecoration.none,
                                 ),
@@ -179,7 +177,7 @@ class _DetailScreenState extends State<DetailScreen>
                             ),
                           );
                         },
-                        itemCount: model.todos.length,
+                        itemCount: _todos.length,
                       ),
                     ),
                   ),

@@ -9,7 +9,7 @@ class ScaleRoute extends PageRouteBuilder {
         transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
           return new ScaleTransition(
             scale: new Tween<double>(
-              begin: 0.5,
+              begin: 0.6,
               end: 1.0,
             ).animate(
                 CurvedAnimation(

@@ -16,6 +16,10 @@ dependencies:
   flutter:
     sdk: flutter
   scoped_model: ^1.0.1
+  # objectdb: ^1.0.5
+  path_provider: ^0.5.0+1
+  json_annotation: ^2.0.0
+  sqflite: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -24,6 +28,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^1.0.0
+  json_serializable: ^2.0.2
 
 
 # For information on the generic Dart part of this file, see the
