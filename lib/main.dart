@@ -61,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
-  Color color = Colors.indigo;
+  int _currentPageIndex = 0;
 
   @override
   void initState() {
@@ -97,8 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return ScopedModelDescendant<TodoListModel>(
         builder: (BuildContext context, Widget child, TodoListModel model) {
       var _tasks = model.tasks;
+      var backgroundColor = _tasks.isEmpty ? Colors.blueGrey : ColorUtils.getColorFrom(id: _tasks[_currentPageIndex].color);
       return GradientBackground(
-        color: color,
+        color: backgroundColor,
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -161,10 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (notification is ScrollEndNotification) {
                       var currentPage = _pageController.page.round().toInt();
                       print("ScrollNotification = ${_pageController.page}");
-                      setState(() {
-                        color = ColorUtils.getColorFrom(
-                            id: _tasks[currentPage].color);
-                      });
+                      setState(() => _currentPageIndex = currentPage);
                     }
                   },
                   child: PageView.builder(
@@ -206,8 +204,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         _tasks[index].codePoint,
                                         fontFamily: 'MaterialIcons',
                                       ),
-                                      color: ColorUtils.getColorFrom(
-                                          id: _tasks[index].color),
+                                      color: ColorUtils.getColorFrom(id: _tasks[index].color),
                                     ),
                                   ),
                                 ),
@@ -241,8 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Hero(
                                   tag: heroIds.progressId,
                                   child: TaskProgressIndicator(
-                                    color: ColorUtils.getColorFrom(
-                                        id: _tasks[index].color),
+                                    color: ColorUtils.getColorFrom(id: _tasks[index].color),
                                     progress: model.getTaskCompletionPercent(
                                         model.tasks[index]),
                                   ),
