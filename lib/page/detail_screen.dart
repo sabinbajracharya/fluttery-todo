@@ -8,9 +8,10 @@ import 'package:todo/component/todo_badge.dart';
 import 'package:todo/model/hero_id_model.dart';
 import 'package:todo/model/todo_model.dart';
 import 'package:todo/utils/color_utils.dart';
+import 'package:todo/page/add_todo_screen.dart';
 
 class DetailScreen extends StatefulWidget {
-  final int taskId;
+  final String taskId;
   final HeroId heroIds;
 
   DetailScreen({
@@ -73,11 +74,19 @@ class _DetailScreenState extends State<DetailScreen>
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
+
+        if (model.tasks.isEmpty) {
+          // Loading
+          return Container(color: Colors.white,);
+        }
+
         var _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
-        var _todos = model.todos.where((it) => it.parent == widget.taskId).toList();
+        var _todos =
+            model.todos.where((it) => it.parent == widget.taskId).toList();
         var _hero = widget.heroIds;
+        var _color = ColorUtils.getColorFrom(id: _task.color);
         return Theme(
-          data: ThemeData(primarySwatch: ColorUtils.getColorFrom(id: _task.color)),
+          data: ThemeData(primarySwatch: _color),
           child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -97,7 +106,7 @@ class _DetailScreenState extends State<DetailScreen>
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TodoBadge(
-                        color: ColorUtils.getColorFrom(id: _task.color),
+                        color: _color,
                         codePoint: _task.codePoint,
                         id: _hero.codePointId,
                       ),
@@ -131,7 +140,7 @@ class _DetailScreenState extends State<DetailScreen>
                       Hero(
                         tag: _hero.progressId,
                         child: TaskProgressIndicator(
-                          color: ColorUtils.getColorFrom(id: _task.color),
+                          color: _color,
                           progress: model.getTaskCompletionPercent(_task),
                         ),
                       )
@@ -149,8 +158,8 @@ class _DetailScreenState extends State<DetailScreen>
                           return Container(
                             padding: EdgeInsets.only(left: 22.0, right: 22.0),
                             child: ListTile(
-                              onTap: () => model.updateTodo(
-                                  todo.copy(isCompleted: todo.isCompleted == 1 ? 0 : 1)),
+                              onTap: () => model.updateTodo(todo.copy(
+                                  isCompleted: todo.isCompleted == 1 ? 0 : 1)),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 0, vertical: 8.0),
                               leading: Checkbox(
@@ -167,7 +176,7 @@ class _DetailScreenState extends State<DetailScreen>
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w600,
                                   color: todo.isCompleted == 1
-                                      ? ColorUtils.getColorFrom(id: _task.color)
+                                      ? _color
                                       : Colors.black54,
                                   decoration: todo.isCompleted == 1
                                       ? TextDecoration.lineThrough
@@ -183,6 +192,21 @@ class _DetailScreenState extends State<DetailScreen>
                   ),
                 ),
               ]),
+            ),
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'fab_new_task',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddTodoScreen(taskId: widget.taskId,),
+                  ),
+                );
+              },
+              tooltip: 'New Todo',
+              backgroundColor: _color,
+              foregroundColor: Colors.white,
+              child: Icon(Icons.add),
             ),
           ),
         );

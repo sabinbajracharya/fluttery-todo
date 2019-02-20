@@ -14,17 +14,17 @@ class DBProvider {
   static final DBProvider db = DBProvider._();
 
   var todos = [
-    Todo(id: 234, parent: 1, name: "Meet Clients", isCompleted: 0),
-    Todo(id: 827, parent: 1, name: "Design Sprint", isCompleted: 0),
-    Todo(id: 914, parent: 1, name: "Icon set design for Mobile App", isCompleted: 1),
-    Todo(id: 83, parent: 2, name: "20 pushups", isCompleted: 0),
-    Todo(id: 3, parent: 2, name: "3 sets squats", isCompleted: 0),
-    Todo(id: 23, parent: 2, name: "15 burpees (3 sets)", isCompleted: 0),
+    Todo("Meet Clients", parent: '1',),
+    Todo("Design Sprint", parent: '1',),
+    Todo("Icon set design for Mobile App", parent: '1', isCompleted: 1),
+    Todo("20 pushups", parent: '2',),
+    Todo("3 sets squats", parent: '2',),
+    Todo("15 burpees (3 sets)", parent: '2',),
   ];
 
   var tasks = [
-    Task(id: 1, name: 'Shopping', color: 8, codePoint: Icons.work.codePoint),
-    Task(id: 2, name: 'Workout', color: 7, codePoint: Icons.fitness_center.codePoint),
+    Task('Shopping', id: '1',  color: 8, codePoint: Icons.work.codePoint),
+    Task('Workout', id: '2', color: 7, codePoint: Icons.fitness_center.codePoint),
   ];
 
   Future<Database> get database async {
@@ -50,15 +50,15 @@ class DBProvider {
     }, onCreate: (Database db, int version) async {
       print("DBProvider:: onCreate()");
       await db.execute("CREATE TABLE Task ("
-          "id INTEGER PRIMARY KEY,"
+          "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "color INTEGER,"
           "code_point INTEGER"
           ")");
       await db.execute("CREATE TABLE Todo ("
-          "id INTEGER PRIMARY KEY,"
+          "id TEXT PRIMARY KEY,"
           "name TEXT,"
-          "parent INTEGER,"
+          "parent TEXT,"
           "completed INTEGER NOT NULL DEFAULT 0"
           ")");
     });
@@ -101,6 +101,11 @@ class DBProvider {
   Future<int> removeTodo(Todo todo) async {
     final db = await database;
     return db.delete('Todo', where: 'id = ?', whereArgs: [todo.id]);
+  }
+
+  Future<int> insertTodo(Todo todo) async {
+    final db = await database;
+    return db.insert('Todo', todo.toJson());
   }
 
   Future<String> get _localPath async {

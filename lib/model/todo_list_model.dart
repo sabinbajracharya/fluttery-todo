@@ -19,7 +19,7 @@ class TodoListModel extends Model {
 
   List<Task> _tasks = [];
   List<Todo> _todos = [];
-  Map<int, int> _taskCompletionPercentage =  Map();
+  Map<String, int> _taskCompletionPercentage =  Map();
 
   static TodoListModel of(BuildContext context) =>
       ScopedModel.of<TodoListModel>(context);
@@ -116,6 +116,7 @@ class TodoListModel extends Model {
   void addTodo(Todo todo) {
     _todos.add(todo);
     _syncJob(todo);
+    _db.insertTodo(todo);
     notifyListeners();
   }
 
@@ -135,7 +136,7 @@ class TodoListModel extends Model {
    // _syncTodoToDB();
   }
 
-  void _calcTaskCompletionPercent(int taskId) {
+  void _calcTaskCompletionPercent(String taskId) {
     var todos = this.todos.where((it) => it.parent == taskId);
     var totalTodos = todos.length;
 

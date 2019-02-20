@@ -61,7 +61,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
-  Color color = Colors.green;
+  Color color = Colors.indigo;
 
   @override
   void initState() {
@@ -94,180 +94,183 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GradientBackground(
-      color: color,
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: Text(widget.title),
-          centerTitle: true,
-          elevation: 0.0,
+    return ScopedModelDescendant<TodoListModel>(
+        builder: (BuildContext context, Widget child, TodoListModel model) {
+      var _tasks = model.tasks;
+      return GradientBackground(
+        color: color,
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-        ),
-        body: ScopedModelDescendant<TodoListModel>(
-          builder: (BuildContext context, Widget child, TodoListModel model) {
-            var _tasks = model.tasks;
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 0.0, left: 56.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      ShadowImage(),
-                      Container(
-                        margin: EdgeInsets.only(top: 22.0, bottom: 12.0),
-                        child: Text(
-                          'Hello, Jane.',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline
-                              .copyWith(color: Colors.white),
-                        ),
-                      ),
-                      Text(
-                        'Looks like feel good.',
+          appBar: AppBar(
+            title: Text(widget.title),
+            centerTitle: true,
+            elevation: 0.0,
+            backgroundColor: Colors.transparent,
+          ),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 0.0, left: 56.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ShadowImage(),
+                    Container(
+                      margin: EdgeInsets.only(top: 22.0, bottom: 12.0),
+                      child: Text(
+                        'Hello, Jane.',
                         style: Theme.of(context)
                             .textTheme
-                            .body1
-                            .copyWith(color: Colors.white.withOpacity(0.7)),
+                            .headline
+                            .copyWith(color: Colors.white),
                       ),
-                      Container(height: 4.0),
-                      Text(
-                        'You have 3 tasks to do today.',
+                    ),
+                    Text(
+                      'Looks like feel good.',
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(color: Colors.white.withOpacity(0.7)),
+                    ),
+                    Container(height: 4.0),
+                    Text(
+                      'You have 3 tasks to do today.',
+                      style: Theme.of(context)
+                          .textTheme
+                          .body1
+                          .copyWith(color: Colors.white.withOpacity(0.7)),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 42.0),
+                      child: Text(
+                        'TODAY : FEBURARY 13, 2019',
                         style: Theme.of(context)
                             .textTheme
-                            .body1
-                            .copyWith(color: Colors.white.withOpacity(0.7)),
+                            .subtitle
+                            .copyWith(color: Colors.white.withOpacity(0.8)),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 42.0),
-                        child: Text(
-                          'TODAY : FEBURARY 13, 2019',
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle
-                              .copyWith(color: Colors.white.withOpacity(0.8)),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 1,
-                  child: NotificationListener<ScrollNotification>(
-                    onNotification: (notification) {
-                      if (notification is ScrollEndNotification) {
-                        var currentPage = _pageController.page.round().toInt();
-                        print("ScrollNotification = ${_pageController.page}");
-                        setState(() {
-                          color = ColorUtils.getColorFrom(id: _tasks[currentPage].color);
-                        });
-                      }
-                    },
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemBuilder: (BuildContext context, int index) {
-                        var heroIds = widget._generateHeroIds(_tasks[index]);
-                        return GestureDetector(
-                          onTap: () => _onHandleTap(_tasks[index]),
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            elevation: 4.0,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 8.0),
-                            color: Colors.white,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 16.0, horizontal: 16.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Hero(
-                                    tag: heroIds.codePointId,
-                                    child: Container(
-                                      padding: EdgeInsets.all(8.0),
-                                      margin: EdgeInsets.only(
-                                        bottom: 6.0,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          color: Colors.grey.shade100,
-                                        ),
-                                      ),
-                                      child: Icon(
-                                        IconData(
-                                          _tasks[index].codePoint,
-                                          fontFamily: 'MaterialIcons',
-                                        ),
-                                        color:ColorUtils.getColorFrom(id: _tasks[index].color),
+              ),
+              Expanded(
+                flex: 1,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (notification) {
+                    if (notification is ScrollEndNotification) {
+                      var currentPage = _pageController.page.round().toInt();
+                      print("ScrollNotification = ${_pageController.page}");
+                      setState(() {
+                        color = ColorUtils.getColorFrom(
+                            id: _tasks[currentPage].color);
+                      });
+                    }
+                  },
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemBuilder: (BuildContext context, int index) {
+                      var heroIds = widget._generateHeroIds(_tasks[index]);
+                      return GestureDetector(
+                        onTap: () => _onHandleTap(_tasks[index]),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16.0),
+                          ),
+                          elevation: 4.0,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 8.0),
+                          color: Colors.white,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 16.0, horizontal: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Hero(
+                                  tag: heroIds.codePointId,
+                                  child: Container(
+                                    padding: EdgeInsets.all(8.0),
+                                    margin: EdgeInsets.only(
+                                      bottom: 6.0,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        color: Colors.grey.shade100,
                                       ),
                                     ),
+                                    child: Icon(
+                                      IconData(
+                                        _tasks[index].codePoint,
+                                        fontFamily: 'MaterialIcons',
+                                      ),
+                                      color: ColorUtils.getColorFrom(
+                                          id: _tasks[index].color),
+                                    ),
                                   ),
-                                  Spacer(
-                                    flex: 8,
+                                ),
+                                Spacer(
+                                  flex: 8,
+                                ),
+                                Container(
+                                  margin: EdgeInsets.only(bottom: 4.0),
+                                  child: Hero(
+                                    tag: heroIds.remainingTaskId,
+                                    child: Text(
+                                      "${model.getTotalTodosFrom(task: model.tasks[index])} Task",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .body1
+                                          .copyWith(color: Colors.grey[500]),
+                                    ),
                                   ),
-                                  Container(
-                                    margin: EdgeInsets.only(bottom: 4.0),
-                                    child: Hero(
-                                      tag: heroIds.remainingTaskId,
-                                      child: Text(
-                                        "${model.getTotalTodosFrom(task: model.tasks[index])} Task",
+                                ),
+                                Container(
+                                  child: Hero(
+                                    tag: heroIds.titleId,
+                                    child: Text(_tasks[index].name,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .body1
-                                            .copyWith(color: Colors.grey[500]),
-                                      ),
-                                    ),
+                                            .title
+                                            .copyWith(color: Colors.black54)),
                                   ),
-                                  Container(
-                                    child: Hero(
-                                      tag: heroIds.titleId,
-                                      child: Text(_tasks[index].name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .title
-                                              .copyWith(color: Colors.black54)),
-                                    ),
+                                ),
+                                Spacer(),
+                                Hero(
+                                  tag: heroIds.progressId,
+                                  child: TaskProgressIndicator(
+                                    color: ColorUtils.getColorFrom(
+                                        id: _tasks[index].color),
+                                    progress: model.getTaskCompletionPercent(
+                                        model.tasks[index]),
                                   ),
-                                  Spacer(),
-                                  Hero(
-                                    tag: heroIds.progressId,
-                                    child: TaskProgressIndicator(
-                                      color: ColorUtils.getColorFrom(id: _tasks[index].color),
-                                      progress: model.getTaskCompletionPercent(model.tasks[index]),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                      itemCount: _tasks.length,
-                    ),
+                        ),
+                      );
+                    },
+                    itemCount: _tasks.length,
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 32.0),
-                ),
-              ],
-            );
-          },
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 32.0),
+              ),
+            ],
+          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: _incrementCounter,
+          //   tooltip: 'New Todo',
+          //   backgroundColor: Colors.white,
+          //   foregroundColor: color,
+          //   child: Icon(Icons.add),
+          // ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: _incrementCounter,
-        //   tooltip: 'New Todo',
-        //   backgroundColor: Colors.white,
-        //   foregroundColor: color,
-        //   child: Icon(Icons.add),
-        // ),
-      ),
-    );
+      );
+    });
   }
 }

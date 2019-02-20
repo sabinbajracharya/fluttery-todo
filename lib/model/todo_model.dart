@@ -1,25 +1,26 @@
 import 'package:meta/meta.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'package:todo/utils/uuid.dart';
+
 part 'todo_model.g.dart';
 
 @JsonSerializable()
 class Todo {
-  int id, parent;
-  String name;
+  final String id, parent;
+  final String name;
   @JsonKey(name: 'completed')
-  int isCompleted;
+  final int isCompleted;
 
-  Todo({
-    @required this.id,
+  Todo(this.name, {
     @required this.parent,
-    @required this.name,
-    @required this.isCompleted,
-  });
+    this.isCompleted = 0,
+    String id
+  }): this.id = id ?? Uuid().generateV4();
 
   Todo copy({String name, int isCompleted, int id, int parent}) {
     return Todo(
-      name: name ?? this.name,
+      name ?? this.name,
       isCompleted: isCompleted ?? this.isCompleted,
       id: id ?? this.id,
       parent: parent ?? this.parent,
