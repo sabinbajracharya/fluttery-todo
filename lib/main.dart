@@ -60,6 +60,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   PageController _pageController;
   int _currentPageIndex = 0;
 
@@ -69,12 +70,13 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void _onHandleTap(Task task) {
+  void _onHandleTap(RelativeRect rect, Task task) {
     var heroIds = widget._generateHeroIds(task);
 
     Navigator.push(
       context,
       ScaleRoute(
+        rect: rect,
         widget: DetailScreen(
           taskId: task.id,
           heroIds: heroIds,
@@ -82,10 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       // MaterialPageRoute(
       //   builder: (context) => DetailScreen(
-      //         color: todo['color'],
-      //         codePoint: todo['code_point'],
-      //         progress: todo['progress'],
-      //         id: todo['id'],
+      //         taskId: task.id,
       //         heroIds: heroIds,
       //       ),
       // ),
@@ -97,7 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return ScopedModelDescendant<TodoListModel>(
         builder: (BuildContext context, Widget child, TodoListModel model) {
       var _tasks = model.tasks;
-      var backgroundColor = _tasks.isEmpty ? Colors.blueGrey : ColorUtils.getColorFrom(id: _tasks[_currentPageIndex].color);
+      var backgroundColor = _tasks.isEmpty
+          ? Colors.blueGrey
+          : ColorUtils.getColorFrom(id: _tasks[_currentPageIndex].color);
       return GradientBackground(
         color: backgroundColor,
         child: Scaffold(
@@ -156,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Expanded(
+                key: _backdropKey,
                 flex: 1,
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
@@ -170,7 +172,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     itemBuilder: (BuildContext context, int index) {
                       var heroIds = widget._generateHeroIds(_tasks[index]);
                       return GestureDetector(
-                        onTap: () => _onHandleTap(_tasks[index]),
+                        onTap: () {
+                          final RenderBox renderBox = _backdropKey.currentContext.findRenderObject();
+                          var backDropHeight = renderBox.size.height;
+                          var bottomOffset = 60.0;
+                          var horizontalOffset = 52.0;
+                          var topOffset = MediaQuery.of(context).size.height - backDropHeight;
+
+                          var rect = RelativeRect.fromLTRB(horizontalOffset, topOffset, horizontalOffset, bottomOffset);
+                          _onHandleTap(rect, _tasks[index]);
+                        },
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
@@ -204,7 +215,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                         _tasks[index].codePoint,
                                         fontFamily: 'MaterialIcons',
                                       ),
-                                      color: ColorUtils.getColorFrom(id: _tasks[index].color),
+                                      color: ColorUtils.getColorFrom(
+                                          id: _tasks[index].color),
                                     ),
                                   ),
                                 ),
@@ -238,7 +250,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 Hero(
                                   tag: heroIds.progressId,
                                   child: TaskProgressIndicator(
-                                    color: ColorUtils.getColorFrom(id: _tasks[index].color),
+                                    color: ColorUtils.getColorFrom(
+                                        id: _tasks[index].color),
                                     progress: model.getTaskCompletionPercent(
                                         model.tasks[index]),
                                   ),

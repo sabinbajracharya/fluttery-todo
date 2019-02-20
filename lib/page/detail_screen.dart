@@ -35,7 +35,7 @@ class _DetailScreenState extends State<DetailScreen>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 280),
+      duration: Duration(milliseconds: 300),
     );
     _animation = Tween<Offset>(begin: Offset(0, 1.0), end: Offset(0.0, 0.0))
         .animate(_controller);
