@@ -209,7 +209,7 @@ class IconPickerBuilder extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Select a color'),
+              title: Text('Select an icon'),
               content: SingleChildScrollView(
                 child: IconPicker(
                   currentIconData: iconData,
