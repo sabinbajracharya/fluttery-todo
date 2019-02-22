@@ -20,7 +20,7 @@ class AddCardScreen extends StatefulWidget {
 class _AddCardScreenState extends State<AddCardScreen> {
   String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Color taskColor = Colors.red;
+  Color taskColor;
   IconData taskIcon;
 
   @override
@@ -174,7 +174,7 @@ class ColorPickerBuilder extends StatelessWidget {
                     content: SingleChildScrollView(
                       child: BlockPicker(
                         availableColors: ColorUtils.defaultColors,
-                        pickerColor: Colors.blue,
+                        pickerColor: color,
                         onColorChanged: onColorChanged,
                       ),
                     ),
