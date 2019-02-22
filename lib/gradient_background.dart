@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GradientBackground extends StatelessWidget {
   final Widget child;
-  final MaterialColor color;
+  final Color color;
 
   GradientBackground({@required this.child, @required this.color});
 
@@ -17,17 +17,24 @@ class GradientBackground extends StatelessWidget {
           end: Alignment.bottomLeft,
           // Add one stop for each color. Stops should increase from 0 to 1
           stops: [0.3, 0.5, 0.7, 0.9],
-          colors: [
-            // Colors are easy thanks to Flutter's Colors class.
-            color[300],
-            color[600],
-            color[700],
-            color[900],
-          ],
+          colors: getColorList(color)
         ),
       ),
       curve: Curves.linear,
       child: child, duration: Duration(milliseconds: 500),
     );
+  }
+
+  List<Color> getColorList(Color color) {
+    if (color is MaterialColor) {
+      return [
+           color[300],
+           color[600],
+           color[700],
+           color[900],
+          ];
+    } else {
+      return List<Color>.filled(4, color);
+    }
   }
 }

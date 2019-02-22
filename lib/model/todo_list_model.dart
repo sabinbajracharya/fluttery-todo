@@ -106,6 +106,13 @@ class TodoListModel extends Model {
     // DBProvider.db.closeDB();
   }
 
+  void addTask(Task task) {
+    _tasks.add(task);
+    _calcTaskCompletionPercent(task.id);
+    _db.insertTask(task);
+    notifyListeners();
+  }
+
   void removeTodo(Todo todo) {
     _todos.removeWhere((it) => it.id == todo.id);
     _syncJob(todo);

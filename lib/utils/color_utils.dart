@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 
 class ColorUtils {
 
-  static const Map<int, MaterialColor> _colors = {
-    0: Colors.blue,
-    1: Colors.green,
-    2: Colors.red,
-    3: Colors.purple,
-    4: Colors.yellow,
-    5: Colors.amber,
-    6: Colors.teal,
-    7: Colors.indigo,
-    8: Colors.pink,
+  static Map<int, Color> _colors = {
+    Colors.blue.value: Colors.blue,
+    Colors.green.value: Colors.green,
+    Colors.red.value: Colors.red,
+    Colors.purple.value: Colors.purple,
+    Colors.yellow.value: Colors.yellow,
+    Colors.amber.value: Colors.amber,
+    Colors.teal.value: Colors.teal,
+    Colors.indigo.value: Colors.indigo,
+    Colors.pink.value: Colors.pink,
+    Colors.black.value: Colors.black,
   };
 
   static Color getColorFrom({int id}) {

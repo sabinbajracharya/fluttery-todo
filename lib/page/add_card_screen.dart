@@ -3,7 +3,6 @@ import 'package:scoped_model/scoped_model.dart';
 
 import 'package:todo/model/todo_list_model.dart';
 import 'package:todo/model/task_model.dart';
-import 'package:todo/utils/color_utils.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:todo/component/todo_badge.dart';
 import 'package:todo/component/icon_picker.dart';
@@ -131,10 +130,11 @@ class _AddCardScreenState extends State<AddCardScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    // model.addTodo(Todo(
-                    //   newTask,
-                    //   parent: _task.id,
-                    // ));
+                    model.addTask(Task(
+                      newTask,
+                      codePoint: taskIcon.codePoint,
+                      color: taskColor.value
+                    ));
                     Navigator.pop(context);
                   }
                 },

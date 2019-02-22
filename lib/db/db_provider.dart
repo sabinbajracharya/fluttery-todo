@@ -23,8 +23,8 @@ class DBProvider {
   ];
 
   var tasks = [
-    Task('Shopping', id: '1',  color: 8, codePoint: Icons.work.codePoint),
-    Task('Workout', id: '2', color: 7, codePoint: Icons.fitness_center.codePoint),
+    Task('Shopping', id: '1',  color: Colors.blue.value, codePoint: Icons.work.codePoint),
+    Task('Workout', id: '2', color: Colors.purple.value, codePoint: Icons.fitness_center.codePoint),
   ];
 
   Future<Database> get database async {
@@ -106,6 +106,11 @@ class DBProvider {
   Future<int> insertTodo(Todo todo) async {
     final db = await database;
     return db.insert('Todo', todo.toJson());
+  }
+
+  Future<int> insertTask(Task task) async {
+    final db = await database;
+    return db.insert('Task', task.toJson());
   }
 
   Future<String> get _localPath async {

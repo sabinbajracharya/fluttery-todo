@@ -164,9 +164,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
                     if (notification is ScrollEndNotification) {
-                      var currentPage = _pageController.page.round().toInt();
                       print("ScrollNotification = ${_pageController.page}");
-                      setState(() => _currentPageIndex = currentPage);
+                      var currentPage = _pageController.page.round().toInt();
+                      if (_currentPageIndex != currentPage) {
+                        setState(() => _currentPageIndex = currentPage);
+                      }
                     }
                   },
                   child: PageView.builder(
