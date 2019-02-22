@@ -6,6 +6,7 @@ import 'package:todo/model/task_model.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:todo/component/todo_badge.dart';
 import 'package:todo/component/icon_picker.dart';
+import 'package:todo/utils/color_utils.dart';
 
 class AddCardScreen extends StatefulWidget {
   AddCardScreen();
@@ -172,6 +173,7 @@ class ColorPickerBuilder extends StatelessWidget {
                     title: Text('Select a color'),
                     content: SingleChildScrollView(
                       child: BlockPicker(
+                        availableColors: ColorUtils.defaultColors,
                         pickerColor: Colors.blue,
                         onColorChanged: onColorChanged,
                       ),

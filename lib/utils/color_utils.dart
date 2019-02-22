@@ -2,20 +2,42 @@ import 'package:flutter/material.dart';
 
 class ColorUtils {
 
-  static Map<int, Color> _colors = {
-    Colors.blue.value: Colors.blue,
-    Colors.green.value: Colors.green,
-    Colors.red.value: Colors.red,
-    Colors.purple.value: Colors.purple,
-    Colors.yellow.value: Colors.yellow,
-    Colors.amber.value: Colors.amber,
-    Colors.teal.value: Colors.teal,
-    Colors.indigo.value: Colors.indigo,
-    Colors.pink.value: Colors.pink,
-    Colors.black.value: Colors.black,
-  };
+  static const List<Color> defaultColors = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+  ];
+
+  static Map<int, Color> _colors = Map();
+
+  static Map<int, Color> get colors {
+    if (_colors.isNotEmpty) {
+      return _colors;
+    }
+
+    defaultColors.forEach((color)  {
+        _colors[color.value] = color;
+    });
+    return _colors;
+  }
 
   static Color getColorFrom({int id}) {
-    return _colors.containsKey(id) ? _colors[id] : _colors[0];
+    return colors.containsKey(id) ? colors[id] : defaultColors[0];
   }
 }
