@@ -6,11 +6,13 @@ import 'package:todo/model/todo_list_model.dart';
 import 'package:todo/gradient_background.dart';
 import 'package:todo/shadow_image.dart';
 import 'package:todo/task_progress_indicator.dart';
-import 'package:todo/page/detail_screen.dart';
+import 'package:todo/page/add_card_screen.dart';
 import 'package:todo/model/hero_id_model.dart';
 import 'package:todo/model/task_model.dart';
 import 'package:todo/route/scale_route.dart';
 import 'package:todo/utils/color_utils.dart';
+import 'package:todo/page/detail_screen.dart';
+import 'package:todo/component/todo_badge.dart';
 
 void main() => runApp(MyApp());
 
@@ -173,13 +175,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       var heroIds = widget._generateHeroIds(_tasks[index]);
                       return GestureDetector(
                         onTap: () {
-                          final RenderBox renderBox = _backdropKey.currentContext.findRenderObject();
+                          final RenderBox renderBox =
+                              _backdropKey.currentContext.findRenderObject();
                           var backDropHeight = renderBox.size.height;
                           var bottomOffset = 60.0;
                           var horizontalOffset = 52.0;
-                          var topOffset = MediaQuery.of(context).size.height - backDropHeight;
+                          var topOffset = MediaQuery.of(context).size.height -
+                              backDropHeight;
 
-                          var rect = RelativeRect.fromLTRB(horizontalOffset, topOffset, horizontalOffset, bottomOffset);
+                          var rect = RelativeRect.fromLTRB(horizontalOffset,
+                              topOffset, horizontalOffset, bottomOffset);
                           _onHandleTap(rect, _tasks[index]);
                         },
                         child: Card(
@@ -197,27 +202,11 @@ class _MyHomePageState extends State<MyHomePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Hero(
-                                  tag: heroIds.codePointId,
-                                  child: Container(
-                                    padding: EdgeInsets.all(8.0),
-                                    margin: EdgeInsets.only(
-                                      bottom: 6.0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: Colors.grey.shade100,
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      IconData(
-                                        _tasks[index].codePoint,
-                                        fontFamily: 'MaterialIcons',
-                                      ),
-                                      color: ColorUtils.getColorFrom(
-                                          id: _tasks[index].color),
-                                    ),
+                                TodoBadge(
+                                  id: heroIds.codePointId,
+                                  codePoint: _tasks[index].codePoint,
+                                  color: ColorUtils.getColorFrom(
+                                    id: _tasks[index].color,
                                   ),
                                 ),
                                 Spacer(
@@ -271,13 +260,20 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: _incrementCounter,
-          //   tooltip: 'New Todo',
-          //   backgroundColor: Colors.white,
-          //   foregroundColor: color,
-          //   child: Icon(Icons.add),
-          // ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddCardScreen(),
+                ),
+              );
+            },
+            tooltip: 'New Todo',
+            backgroundColor: backgroundColor,
+            foregroundColor: Colors.white,
+            child: Icon(Icons.add),
+          ),
         ),
       );
     });
