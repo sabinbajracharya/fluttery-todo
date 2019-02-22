@@ -11,6 +11,7 @@ import 'package:todo/model/hero_id_model.dart';
 import 'package:todo/model/task_model.dart';
 import 'package:todo/route/scale_route.dart';
 import 'package:todo/utils/color_utils.dart';
+import 'package:todo/utils/datetime_utils.dart';
 import 'package:todo/page/detail_screen.dart';
 import 'package:todo/component/todo_badge.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: MyHomePage(title: 'TODO'),
+      home: MyHomePage(title: ''),
     );
 
     return ScopedModel<TodoListModel>(
@@ -57,6 +58,11 @@ class MyHomePage extends StatefulWidget {
     );
   }
 
+  String currentDay(BuildContext context) {
+    var dayIndex = MaterialLocalizations.of(context).firstDayOfWeekIndex;
+    return DateTimeUtils.days[dayIndex];
+  }
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -76,10 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<TodoListModel>(
         builder: (BuildContext context, Widget child, TodoListModel model) {
+
       var _tasks = model.tasks;
+      var _todos = model.todos;
       var backgroundColor = _tasks.isEmpty || _tasks.length == _currentPageIndex
           ? Colors.blueGrey
           : ColorUtils.getColorFrom(id: _tasks[_currentPageIndex].color);
+
       return GradientBackground(
         color: backgroundColor,
         child: Scaffold(
@@ -100,9 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: <Widget>[
                     // ShadowImage(),
                     Container(
-                      margin: EdgeInsets.only(top: 22.0, bottom: 12.0),
+                      // margin: EdgeInsets.only(top: 22.0),
                       child: Text(
-                        'Hello, Jane.',
+                        '${widget.currentDay(context)}',
                         style: Theme.of(context)
                             .textTheme
                             .headline
@@ -110,30 +119,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Text(
-                      'Looks like feel good.',
+                      '${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}',
                       style: Theme.of(context)
                           .textTheme
-                          .body1
+                          .title
                           .copyWith(color: Colors.white.withOpacity(0.7)),
                     ),
-                    Container(height: 4.0),
+                    Container(height: 16.0),
                     Text(
-                      'You have 3 tasks to do today.',
+                      'You have ${_todos.where((todo) => todo.isCompleted == 0).length} tasks to complete',
                       style: Theme.of(context)
                           .textTheme
                           .body1
                           .copyWith(color: Colors.white.withOpacity(0.7)),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 42.0),
-                      child: Text(
-                        'TODAY : FEBURARY 13, 2019',
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle
-                            .copyWith(color: Colors.white.withOpacity(0.8)),
-                      ),
-                    ),
+                    Container(height: 16.0,)
+                    // Container(
+                    //   margin: EdgeInsets.only(top: 42.0),
+                    //   child: Text(
+                    //     'TODAY : FEBURARY 13, 2019',
+                    //     style: Theme.of(context)
+                    //         .textTheme
+                    //         .subtitle
+                    //         .copyWith(color: Colors.white.withOpacity(0.8)),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
