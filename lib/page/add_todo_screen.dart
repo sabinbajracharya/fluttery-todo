@@ -4,12 +4,16 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:todo/model/todo_list_model.dart';
 import 'package:todo/model/todo_model.dart';
 import 'package:todo/utils/color_utils.dart';
+import 'package:todo/component/todo_badge.dart';
+import 'package:todo/model/hero_id_model.dart';
 
 class AddTodoScreen extends StatefulWidget {
   final String taskId;
+  final HeroId heroIds;
 
   AddTodoScreen({
     @required this.taskId,
+    @required this.heroIds,
   });
 
   @override
@@ -36,7 +40,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
       builder: (BuildContext context, Widget child, TodoListModel model) {
         if (model.tasks.isEmpty) {
           // Loading
-          return Container(color: Colors.white,);
+          return Container(
+            color: Colors.white,
+          );
         }
 
         var _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
@@ -93,22 +99,24 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                 ),
                 Row(
                   children: [
-                    Icon(
-                      IconData(
-                        _task.codePoint,
-                        fontFamily: 'MaterialIcons',
-                      ),
+                    TodoBadge(
+                      codePoint: _task.codePoint,
                       color: _color,
+                      id: widget.heroIds.codePointId,
+                      size: 20.0,
                     ),
                     Container(
                       width: 16.0,
                     ),
-                    Text(
-                      'Work',
-                      style: TextStyle(
-                        color: Colors.black38,
-                        fontWeight: FontWeight.w600,
+                    Hero(
+                      child: Text(
+                        _task.name,
+                        style: TextStyle(
+                          color: Colors.black38,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
+                      tag: "not_using_right_now", //widget.heroIds.titleId,
                     ),
                   ],
                 )

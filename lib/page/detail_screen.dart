@@ -74,10 +74,11 @@ class _DetailScreenState extends State<DetailScreen>
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
-
         if (model.tasks.isEmpty) {
           // Loading
-          return Container(color: Colors.white,);
+          return Container(
+            color: Colors.white,
+          );
         }
 
         var _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
@@ -199,7 +200,8 @@ class _DetailScreenState extends State<DetailScreen>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddTodoScreen(taskId: widget.taskId,),
+                    builder: (context) =>
+                      AddTodoScreen(taskId: widget.taskId, heroIds: _hero),
                   ),
                 );
               },
