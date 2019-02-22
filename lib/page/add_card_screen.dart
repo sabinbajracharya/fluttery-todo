@@ -20,7 +20,7 @@ class AddCardScreen extends StatefulWidget {
 class _AddCardScreenState extends State<AddCardScreen> {
   String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Color taskColor;
+  Color taskColor = Colors.red;
   IconData taskIcon;
 
   @override
@@ -28,7 +28,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
     super.initState();
     setState(() {
       newTask = '';
-      taskColor = Colors.black;
+      taskColor = ColorUtils.defaultColors[0];
       taskIcon = Icons.work;
     });
   }
