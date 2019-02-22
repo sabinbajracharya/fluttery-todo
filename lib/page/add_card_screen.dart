@@ -48,7 +48,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              'New Card',
+              'New Category',
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -64,7 +64,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'What task are you planning to perfrom?',
+                  'Category will help you group related task!',
                   style: TextStyle(
                       color: Colors.black38,
                       fontWeight: FontWeight.w600,
@@ -81,7 +81,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                   autofocus: true,
                   decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Your Task...',
+                      hintText: 'Category Name...',
                       hintStyle: TextStyle(
                         color: Colors.black26,
                       )),

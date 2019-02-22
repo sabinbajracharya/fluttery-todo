@@ -72,33 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void _onHandleTap(RelativeRect rect, Task task) {
-    var heroIds = widget._generateHeroIds(task);
-
-    Navigator.push(
-      context,
-      ScaleRoute(
-        rect: rect,
-        widget: DetailScreen(
-          taskId: task.id,
-          heroIds: heroIds,
-        ),
-      ),
-      // MaterialPageRoute(
-      //   builder: (context) => DetailScreen(
-      //         taskId: task.id,
-      //         heroIds: heroIds,
-      //       ),
-      // ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<TodoListModel>(
         builder: (BuildContext context, Widget child, TodoListModel model) {
       var _tasks = model.tasks;
-      var backgroundColor = _tasks.isEmpty
+      var backgroundColor = _tasks.isEmpty || _tasks.length == _currentPageIndex
           ? Colors.blueGrey
           : ColorUtils.getColorFrom(id: _tasks[_currentPageIndex].color);
       return GradientBackground(
@@ -119,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    ShadowImage(),
+                    // ShadowImage(),
                     Container(
                       margin: EdgeInsets.only(top: 22.0, bottom: 12.0),
                       child: Text(
@@ -174,86 +153,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: PageView.builder(
                     controller: _pageController,
                     itemBuilder: (BuildContext context, int index) {
-                      var heroIds = widget._generateHeroIds(_tasks[index]);
-                      return GestureDetector(
-                        onTap: () {
-                          final RenderBox renderBox =
-                              _backdropKey.currentContext.findRenderObject();
-                          var backDropHeight = renderBox.size.height;
-                          var bottomOffset = 60.0;
-                          var horizontalOffset = 52.0;
-                          var topOffset = MediaQuery.of(context).size.height -
-                              backDropHeight;
-
-                          var rect = RelativeRect.fromLTRB(horizontalOffset,
-                              topOffset, horizontalOffset, bottomOffset);
-                          _onHandleTap(rect, _tasks[index]);
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                          elevation: 4.0,
-                          margin: EdgeInsets.symmetric(
-                              vertical: 16.0, horizontal: 8.0),
-                          color: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                TodoBadge(
-                                  id: heroIds.codePointId,
-                                  codePoint: _tasks[index].codePoint,
-                                  color: ColorUtils.getColorFrom(
-                                    id: _tasks[index].color,
-                                  ),
-                                ),
-                                Spacer(
-                                  flex: 8,
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(bottom: 4.0),
-                                  child: Hero(
-                                    tag: heroIds.remainingTaskId,
-                                    child: Text(
-                                      "${model.getTotalTodosFrom(task: model.tasks[index])} Task",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .body1
-                                          .copyWith(color: Colors.grey[500]),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  child: Hero(
-                                    tag: heroIds.titleId,
-                                    child: Text(_tasks[index].name,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .title
-                                            .copyWith(color: Colors.black54)),
-                                  ),
-                                ),
-                                Spacer(),
-                                Hero(
-                                  tag: heroIds.progressId,
-                                  child: TaskProgressIndicator(
-                                    color: ColorUtils.getColorFrom(
-                                        id: _tasks[index].color),
-                                    progress: model.getTaskCompletionPercent(
-                                        model.tasks[index]),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                      if (index == _tasks.length) {
+                        return AddPageCard();
+                      } else {
+                        return TaskCard(
+                          backdropKey: _backdropKey,
+                          color:
+                              ColorUtils.getColorFrom(id: _tasks[index].color),
+                          getHeroIds: widget._generateHeroIds,
+                          getTaskCompletionPercent:
+                              model.getTaskCompletionPercent,
+                          getTotalTodos: model.getTotalTodosFrom,
+                          task: _tasks[index],
+                        );
+                      }
                     },
-                    itemCount: _tasks.length,
+                    itemCount: _tasks.length + 1,
                   ),
                 ),
               ),
@@ -262,22 +177,176 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddCardScreen(),
-                ),
-              );
-            },
-            tooltip: 'New Todo',
-            backgroundColor: backgroundColor,
-            foregroundColor: Colors.white,
-            child: Icon(Icons.add),
-          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => AddCardScreen(),
+          //     ),
+          //   );
+          // },
+          //   tooltip: 'New Todo',
+          //   backgroundColor: backgroundColor,
+          //   foregroundColor: Colors.white,
+          //   child: Icon(Icons.add),
+          // ),
         ),
       );
     });
+  }
+}
+
+class AddPageCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      elevation: 4.0,
+      margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(16.0),
+        color: Colors.white,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddCardScreen(),
+              ),
+            );
+          },
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add,
+                  size: 52.0,
+                ),
+                Container(height: 8.0,),
+                Text('Add Category'),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+typedef TaskGetter<T, V> = V Function(T value);
+
+class TaskCard extends StatelessWidget {
+  final GlobalKey backdropKey;
+  final Task task;
+  final Color color;
+
+  final TaskGetter<Task, int> getTotalTodos;
+  final TaskGetter<Task, HeroId> getHeroIds;
+  final TaskGetter<Task, int> getTaskCompletionPercent;
+
+  TaskCard({
+    @required this.backdropKey,
+    @required this.color,
+    @required this.task,
+    @required this.getTotalTodos,
+    @required this.getHeroIds,
+    @required this.getTaskCompletionPercent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var heroIds = getHeroIds(task);
+    return GestureDetector(
+      onTap: () {
+        final RenderBox renderBox =
+            backdropKey.currentContext.findRenderObject();
+        var backDropHeight = renderBox.size.height;
+        var bottomOffset = 60.0;
+        var horizontalOffset = 52.0;
+        var topOffset = MediaQuery.of(context).size.height - backDropHeight;
+
+        var rect = RelativeRect.fromLTRB(
+            horizontalOffset, topOffset, horizontalOffset, bottomOffset);
+        Navigator.push(
+          context,
+          ScaleRoute(
+            rect: rect,
+            widget: DetailScreen(
+              taskId: task.id,
+              heroIds: heroIds,
+            ),
+          ),
+          // MaterialPageRoute(
+          //   builder: (context) => DetailScreen(
+          //         taskId: task.id,
+          //         heroIds: heroIds,
+          //       ),
+          // ),
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        elevation: 4.0,
+        margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+        color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TodoBadge(
+                id: heroIds.codePointId,
+                codePoint: task.codePoint,
+                color: ColorUtils.getColorFrom(
+                  id: task.color,
+                ),
+              ),
+              Spacer(
+                flex: 8,
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 4.0),
+                child: Hero(
+                  tag: heroIds.remainingTaskId,
+                  child: Text(
+                    "${getTotalTodos(task)} Task",
+                    style: Theme.of(context)
+                        .textTheme
+                        .body1
+                        .copyWith(color: Colors.grey[500]),
+                  ),
+                ),
+              ),
+              Container(
+                child: Hero(
+                  tag: heroIds.titleId,
+                  child: Text(task.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(color: Colors.black54)),
+                ),
+              ),
+              Spacer(),
+              Hero(
+                tag: heroIds.progressId,
+                child: TaskProgressIndicator(
+                  color: color,
+                  progress: getTaskCompletionPercent(task),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -15,7 +15,7 @@ class TodoListModel extends Model {
   List<Todo> get todos => _todos.toList();
   List<Task> get tasks => _tasks.toList();
   int getTaskCompletionPercent(Task task) => _taskCompletionPercentage[task.id];
-  int getTotalTodosFrom({@required Task task}) => todos.where((it) => it.parent == task.id).length;
+  int getTotalTodosFrom(Task task) => todos.where((it) => it.parent == task.id).length;
 
   List<Task> _tasks = [];
   List<Todo> _todos = [];
