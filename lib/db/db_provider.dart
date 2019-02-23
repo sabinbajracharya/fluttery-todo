@@ -113,6 +113,14 @@ class DBProvider {
     return db.insert('Task', task.toJson());
   }
 
+  Future<void> removeTask(Task task) async {
+    final db = await database;
+    return db.transaction<void>((txn) async {
+      await txn.delete('Todo', where: 'parent = ?', whereArgs: [task.id]);
+      await txn.delete('Task', where: 'id = ?', whereArgs: [task.id]);
+    });
+  }
+
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;

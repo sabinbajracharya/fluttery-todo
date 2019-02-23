@@ -25,8 +25,7 @@ class DetailScreen extends StatefulWidget {
   }
 }
 
-class _DetailScreenState extends State<DetailScreen>
-    with SingleTickerProviderStateMixin {
+class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Offset> _animation;
 
@@ -74,16 +73,17 @@ class _DetailScreenState extends State<DetailScreen>
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
-        if (model.tasks.isEmpty) {
-          // Loading
+        var _task;
+
+        try {
+         _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
+        } catch (e) {
           return Container(
             color: Colors.white,
           );
         }
 
-        var _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
-        var _todos =
-            model.todos.where((it) => it.parent == widget.taskId).toList();
+        var _todos = model.todos.where((it) => it.parent == widget.taskId).toList();
         var _hero = widget.heroIds;
         var _color = ColorUtils.getColorFrom(id: _task.color);
         return Theme(
@@ -95,6 +95,12 @@ class _DetailScreenState extends State<DetailScreen>
               iconTheme: IconThemeData(color: Colors.black26),
               brightness: Brightness.light,
               backgroundColor: Colors.white,
+              actions: [
+                SimpleAlertDialog(
+                  color: _color,
+                  onActionPressed: () => model.removeTask(_task),
+                ),
+              ],
             ),
             body: Padding(
               padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 8.0),
@@ -201,7 +207,7 @@ class _DetailScreenState extends State<DetailScreen>
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                      AddTodoScreen(taskId: widget.taskId, heroIds: _hero),
+                        AddTodoScreen(taskId: widget.taskId, heroIds: _hero),
                   ),
                 );
               },
@@ -220,5 +226,54 @@ class _DetailScreenState extends State<DetailScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+}
+
+typedef void Callback();
+
+class SimpleAlertDialog extends StatelessWidget {
+  final Color color;
+  final Callback onActionPressed;
+
+  SimpleAlertDialog({
+    @required this.color,
+    @required this.onActionPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FlatButton(
+      textColor: color,
+      child: Icon(Icons.delete),
+      onPressed: () {
+        showDialog(
+          context: context,
+          barrierDismissible: false, // user must tap button!
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Delete this card?'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                        'This is a one way street! Deleting this will remove all the task assigned in this card.'),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Delete'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    onActionPressed();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 }

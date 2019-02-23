@@ -67,28 +67,39 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  AnimationController _controller;
+  Animation<double> _animation;
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   PageController _pageController;
   int _currentPageIndex = 0;
 
   @override
   void initState() {
-    _pageController = PageController(initialPage: 0, viewportFraction: 0.8);
     super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 300),
+    );
+    _animation = Tween<double>(begin: 0.0, end: 1.0).animate(_controller);
+    _pageController = PageController(initialPage: 0, viewportFraction: 0.8);
   }
 
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<TodoListModel>(
         builder: (BuildContext context, Widget child, TodoListModel model) {
-
+      var _isLoading = model.isLoading;
       var _tasks = model.tasks;
       var _todos = model.todos;
       var backgroundColor = _tasks.isEmpty || _tasks.length == _currentPageIndex
           ? Colors.blueGrey
           : ColorUtils.getColorFrom(id: _tasks[_currentPageIndex].color);
-
+      if (!_isLoading) {
+        // move the animation value towards upperbound only when loading is complete
+        _controller.forward();
+      }
       return GradientBackground(
         color: backgroundColor,
         child: Scaffold(
@@ -99,115 +110,123 @@ class _MyHomePageState extends State<MyHomePage> {
             elevation: 0.0,
             backgroundColor: Colors.transparent,
           ),
-          body: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 0.0, left: 56.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // ShadowImage(),
-                    Container(
-                      // margin: EdgeInsets.only(top: 22.0),
-                      child: Text(
-                        '${widget.currentDay(context)}',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headline
-                            .copyWith(color: Colors.white),
+          body: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1.0,
+                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+                  ),
+                )
+              : FadeTransition(
+                  opacity: _animation,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(top: 0.0, left: 56.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            // ShadowImage(),
+                            Container(
+                              // margin: EdgeInsets.only(top: 22.0),
+                              child: Text(
+                                '${widget.currentDay(context)}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline
+                                    .copyWith(color: Colors.white),
+                              ),
+                            ),
+                            Text(
+                              '${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}',
+                              style: Theme.of(context).textTheme.title.copyWith(
+                                  color: Colors.white.withOpacity(0.7)),
+                            ),
+                            Container(height: 16.0),
+                            Text(
+                              'You have ${_todos.where((todo) => todo.isCompleted == 0).length} tasks to complete',
+                              style: Theme.of(context).textTheme.body1.copyWith(
+                                  color: Colors.white.withOpacity(0.7)),
+                            ),
+                            Container(
+                              height: 16.0,
+                            )
+                            // Container(
+                            //   margin: EdgeInsets.only(top: 42.0),
+                            //   child: Text(
+                            //     'TODAY : FEBURARY 13, 2019',
+                            //     style: Theme.of(context)
+                            //         .textTheme
+                            //         .subtitle
+                            //         .copyWith(color: Colors.white.withOpacity(0.8)),
+                            //   ),
+                            // ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Text(
-                      '${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}',
-                      style: Theme.of(context)
-                          .textTheme
-                          .title
-                          .copyWith(color: Colors.white.withOpacity(0.7)),
-                    ),
-                    Container(height: 16.0),
-                    Text(
-                      'You have ${_todos.where((todo) => todo.isCompleted == 0).length} tasks to complete',
-                      style: Theme.of(context)
-                          .textTheme
-                          .body1
-                          .copyWith(color: Colors.white.withOpacity(0.7)),
-                    ),
-                    Container(height: 16.0,)
-                    // Container(
-                    //   margin: EdgeInsets.only(top: 42.0),
-                    //   child: Text(
-                    //     'TODAY : FEBURARY 13, 2019',
-                    //     style: Theme.of(context)
-                    //         .textTheme
-                    //         .subtitle
-                    //         .copyWith(color: Colors.white.withOpacity(0.8)),
-                    //   ),
-                    // ),
-                  ],
-                ),
-              ),
-              Expanded(
-                key: _backdropKey,
-                flex: 1,
-                child: NotificationListener<ScrollNotification>(
-                  onNotification: (notification) {
-                    if (notification is ScrollEndNotification) {
-                      print("ScrollNotification = ${_pageController.page}");
-                      var currentPage = _pageController.page.round().toInt();
-                      if (_currentPageIndex != currentPage) {
-                        setState(() => _currentPageIndex = currentPage);
-                      }
-                    }
-                  },
-                  child: PageView.builder(
-                    controller: _pageController,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == _tasks.length) {
-                        return AddPageCard();
-                      } else {
-                        return TaskCard(
-                          backdropKey: _backdropKey,
-                          color:
-                              ColorUtils.getColorFrom(id: _tasks[index].color),
-                          getHeroIds: widget._generateHeroIds,
-                          getTaskCompletionPercent:
-                              model.getTaskCompletionPercent,
-                          getTotalTodos: model.getTotalTodosFrom,
-                          task: _tasks[index],
-                        );
-                      }
-                    },
-                    itemCount: _tasks.length + 1,
+                      Expanded(
+                        key: _backdropKey,
+                        flex: 1,
+                        child: NotificationListener<ScrollNotification>(
+                          onNotification: (notification) {
+                            if (notification is ScrollEndNotification) {
+                              print(
+                                  "ScrollNotification = ${_pageController.page}");
+                              var currentPage =
+                                  _pageController.page.round().toInt();
+                              if (_currentPageIndex != currentPage) {
+                                setState(() => _currentPageIndex = currentPage);
+                              }
+                            }
+                          },
+                          child: PageView.builder(
+                            controller: _pageController,
+                            itemBuilder: (BuildContext context, int index) {
+                              if (index == _tasks.length) {
+                                return AddPageCard(
+                                  color: Colors.blueGrey,
+                                );
+                              } else {
+                                return TaskCard(
+                                  backdropKey: _backdropKey,
+                                  color: ColorUtils.getColorFrom(
+                                      id: _tasks[index].color),
+                                  getHeroIds: widget._generateHeroIds,
+                                  getTaskCompletionPercent:
+                                      model.getTaskCompletionPercent,
+                                  getTotalTodos: model.getTotalTodosFrom,
+                                  task: _tasks[index],
+                                );
+                              }
+                            },
+                            itemCount: _tasks.length + 1,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 32.0),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 32.0),
-              ),
-            ],
-          ),
-          // floatingActionButton: FloatingActionButton(
-          //   onPressed: () {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => AddCardScreen(),
-          //     ),
-          //   );
-          // },
-          //   tooltip: 'New Todo',
-          //   backgroundColor: backgroundColor,
-          //   foregroundColor: Colors.white,
-          //   child: Icon(Icons.add),
-          // ),
         ),
       );
     });
   }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 }
 
 class AddPageCard extends StatelessWidget {
+  final Color color;
+
+  const AddPageCard({Key key, this.color = Colors.black}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -236,9 +255,15 @@ class AddPageCard extends StatelessWidget {
                 Icon(
                   Icons.add,
                   size: 52.0,
+                  color: color,
                 ),
-                Container(height: 8.0,),
-                Text('Add Category'),
+                Container(
+                  height: 8.0,
+                ),
+                Text(
+                  'Add Category',
+                  style: TextStyle(color: color),
+                ),
               ],
             ),
           ),

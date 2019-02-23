@@ -37,12 +37,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
-        if (model.tasks.isEmpty) {
-          // Loading
-          return Container(
-            color: Colors.white,
-          );
-        }
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
