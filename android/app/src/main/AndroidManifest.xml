@@ -15,7 +15,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Todo"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/todo_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
