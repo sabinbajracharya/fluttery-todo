@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     var app = MaterialApp(
       title: 'Todo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.deepPurple,
         textTheme: TextTheme(
           headline: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w400),
           title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500),
