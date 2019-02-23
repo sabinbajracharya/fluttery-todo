@@ -16,12 +16,15 @@ import 'package:todo/utils/color_utils.dart';
 import 'package:todo/utils/datetime_utils.dart';
 import 'package:todo/page/detail_screen.dart';
 import 'package:todo/component/todo_badge.dart';
+import 'package:todo/page/privacy_policy.dart';
+import 'package:todo/model/data/choice_card.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+  static FirebaseAnalyticsObserver observer =
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +118,23 @@ class _MyHomePageState extends State<MyHomePage>
             centerTitle: true,
             elevation: 0.0,
             backgroundColor: Colors.transparent,
+            actions: [
+              PopupMenuButton<Choice>(
+                onSelected: (choice) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          PrivacyPolicyScreen()));
+                },
+                itemBuilder: (BuildContext context) {
+                  return choices.map((Choice choice) {
+                    return PopupMenuItem<Choice>(
+                      value: choice,
+                      child: Text(choice.title),
+                    );
+                  }).toList();
+                },
+              ),
+            ],
           ),
           body: _isLoading
               ? Center(
