@@ -38,8 +38,6 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
     );
     _animation = Tween<Offset>(begin: Offset(0, 1.0), end: Offset(0.0, 0.0))
         .animate(_controller);
-
-    setState(() => {});
   }
 
   // getContainer(bool isCompleted, {Widget child}) {
@@ -135,7 +133,7 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                       ),
                       Container(
                         child: Hero(
-                          tag: _hero.titleId,
+                          tag: 'title_hero_unused',//_hero.titleId,
                           child: Text(_task.name,
                               style: Theme.of(context)
                                   .textTheme
@@ -157,44 +155,41 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(top: 16.0),
-                    child: SlideTransition(
-                      position: _animation,
-                      child: ListView.builder(
-                        itemBuilder: (BuildContext context, int index) {
-                          var todo = _todos[index];
-                          return Container(
-                            padding: EdgeInsets.only(left: 22.0, right: 22.0),
-                            child: ListTile(
-                              onTap: () => model.updateTodo(todo.copy(
-                                  isCompleted: todo.isCompleted == 1 ? 0 : 1)),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 0, vertical: 8.0),
-                              leading: Checkbox(
-                                  onChanged: (value) => model.updateTodo(
-                                      todo.copy(isCompleted: value ? 1 : 0)),
-                                  value: todo.isCompleted == 1 ? true : false),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete_outline),
-                                onPressed: () => model.removeTodo(todo),
-                              ),
-                              title: Text(
-                                todo.name,
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: todo.isCompleted == 1
-                                      ? _color
-                                      : Colors.black54,
-                                  decoration: todo.isCompleted == 1
-                                      ? TextDecoration.lineThrough
-                                      : TextDecoration.none,
-                                ),
+                    child: ListView.builder(
+                      itemBuilder: (BuildContext context, int index) {
+                        var todo = _todos[index];
+                        return Container(
+                          padding: EdgeInsets.only(left: 22.0, right: 22.0),
+                          child: ListTile(
+                            onTap: () => model.updateTodo(todo.copy(
+                                isCompleted: todo.isCompleted == 1 ? 0 : 1)),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 8.0),
+                            leading: Checkbox(
+                                onChanged: (value) => model.updateTodo(
+                                    todo.copy(isCompleted: value ? 1 : 0)),
+                                value: todo.isCompleted == 1 ? true : false),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete_outline),
+                              onPressed: () => model.removeTodo(todo),
+                            ),
+                            title: Text(
+                              todo.name,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                color: todo.isCompleted == 1
+                                    ? _color
+                                    : Colors.black54,
+                                decoration: todo.isCompleted == 1
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
                               ),
                             ),
-                          );
-                        },
-                        itemCount: _todos.length,
-                      ),
+                          ),
+                        );
+                      },
+                      itemCount: _todos.length,
                     ),
                   ),
                 ),
