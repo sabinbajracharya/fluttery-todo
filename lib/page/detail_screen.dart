@@ -264,6 +264,13 @@ class SimpleAlertDialog extends StatelessWidget {
                     onActionPressed();
                   },
                 ),
+                FlatButton(
+                  child: Text('Cancel'),
+                  textColor: Colors.grey,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ],
             );
           },
