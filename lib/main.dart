@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 
 import 'package:todo/model/todo_list_model.dart';
-
 import 'package:todo/gradient_background.dart';
-import 'package:todo/shadow_image.dart';
 import 'package:todo/task_progress_indicator.dart';
 import 'package:todo/page/add_card_screen.dart';
 import 'package:todo/model/hero_id_model.dart';
@@ -22,10 +18,6 @@ import 'package:todo/model/data/choice_card.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
-
   @override
   Widget build(BuildContext context) {
     var app = MaterialApp(
@@ -42,7 +34,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      navigatorObservers: <NavigatorObserver>[observer],
       home: MyHomePage(title: ''),
     );
 

@@ -22,7 +22,7 @@ dependencies:
   sqflite: ^1.1.0
   flutter_colorpicker: ^0.2.1
   intl: ^0.15.7
-  firebase_analytics: ^2.0.2+1
+  # firebase_analytics: ^2.0.2+1
   flutter_markdown: ^0.2.0
 
   # The following adds the Cupertino Icons font to your application.
