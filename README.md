@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">A minimal Todo app mobile app made using <a href="https://flutter.dev" target="_blank">Flutter</a>.</h4>
+<h4 align="center">A minimal Todo mobile app made using <a href="https://flutter.dev" target="_blank">Flutter</a>.</h4>
 
 
 <p align="center">
