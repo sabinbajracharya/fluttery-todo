@@ -1,17 +1,11 @@
 import 'package:intl/intl.dart';
 
 class DateTimeUtils {
-  static const _days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-
-  static List<String> get days => _days;
+  
+  static String get currentDay {
+    DateTime now = DateTime.now();
+    return DateFormat('EEEE').format(now);
+  }
 
   static String get currentMonth {
     DateTime now = DateTime.now();
