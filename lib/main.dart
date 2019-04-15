@@ -59,8 +59,8 @@ class MyHomePage extends StatefulWidget {
   }
 
   String currentDay(BuildContext context) {
-    var dayIndex = MaterialLocalizations.of(context).firstDayOfWeekIndex;
-    return DateTimeUtils.days[dayIndex];
+    
+    return DateTimeUtils.currentDay;
   }
 
   @override
