@@ -178,6 +178,11 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                     padding: EdgeInsets.only(top: 16.0),
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
+                        if (index == _todos.length) {
+                          return SizedBox(
+                            height: 56, // size of FAB
+                          );
+                        }
                         var todo = _todos[index];
                         return Container(
                           padding: EdgeInsets.only(left: 22.0, right: 22.0),
@@ -210,7 +215,7 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                           ),
                         );
                       },
-                      itemCount: _todos.length,
+                      itemCount: _todos.length + 1,
                     ),
                   ),
                 ),
