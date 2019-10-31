@@ -9,6 +9,8 @@ import 'package:todo/model/hero_id_model.dart';
 import 'package:todo/model/todo_model.dart';
 import 'package:todo/utils/color_utils.dart';
 import 'package:todo/page/add_todo_screen.dart';
+import 'package:todo/page/edit_task_screen.dart';
+import 'package:todo/model/task_model.dart';
 
 class DetailScreen extends StatefulWidget {
   final String taskId;
@@ -71,7 +73,7 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
       builder: (BuildContext context, Widget child, TodoListModel model) {
-        var _task;
+        Task _task;
 
         try {
          _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
@@ -84,6 +86,8 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
         var _todos = model.todos.where((it) => it.parent == widget.taskId).toList();
         var _hero = widget.heroIds;
         var _color = ColorUtils.getColorFrom(id: _task.color);
+        var _icon = IconData(_task.codePoint, fontFamily: 'MaterialIcons');
+
         return Theme(
           data: ThemeData(primarySwatch: _color),
           child: Scaffold(
@@ -94,6 +98,23 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
               brightness: Brightness.light,
               backgroundColor: Colors.white,
               actions: [
+                IconButton(
+                  icon: Icon(Icons.edit),
+                  color: _color,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditTaskScreen(
+                          taskId: _task.id,
+                          taskName: _task.name,
+                          icon: _icon,
+                          color: _color,
+                        ),
+                      ),
+                    );
+                  },
+                ),
                 SimpleAlertDialog(
                   color: _color,
                   onActionPressed: () => model.removeTask(_task),
@@ -237,9 +258,9 @@ class SimpleAlertDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      textColor: color,
-      child: Icon(Icons.delete),
+    return IconButton(
+      color: color,
+      icon: Icon(Icons.delete),
       onPressed: () {
         showDialog(
           context: context,

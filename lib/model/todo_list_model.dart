@@ -71,6 +71,13 @@ class TodoListModel extends Model {
     });
   }
 
+  void updateTask(Task task) {
+    var oldTask = _tasks.firstWhere((it) => it.id == task.id);
+    var replaceIndex = _tasks.indexOf(oldTask);
+    _tasks.replaceRange(replaceIndex, replaceIndex + 1, [task]);
+    notifyListeners();
+  }
+
   void removeTodo(Todo todo) {
     _todos.removeWhere((it) => it.id == todo.id);
     _syncJob(todo);

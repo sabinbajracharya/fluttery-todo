@@ -5,30 +5,41 @@ import 'package:todo/model/todo_list_model.dart';
 import 'package:todo/model/task_model.dart';
 import 'package:todo/component/iconpicker/icon_picker_builder.dart';
 import 'package:todo/component/colorpicker/color_picker_builder.dart';
-import 'package:todo/utils/color_utils.dart';
 
-class AddCardScreen extends StatefulWidget {
-  AddCardScreen();
+class EditTaskScreen extends StatefulWidget {
+  final String taskId;
+  final String taskName;
+  final Color color;
+  final IconData icon;
+
+  EditTaskScreen({
+    @required this.taskId
+  , @required this.taskName
+  , @required this.color
+  , @required this.icon
+  });
 
   @override
   State<StatefulWidget> createState() {
-    return _AddCardScreenState();
+    return _EditCardScreenState();
   }
 }
 
-class _AddCardScreenState extends State<AddCardScreen> {
+class _EditCardScreenState extends State<EditTaskScreen> {
+  final  btnSaveTitle = "Save Changes";
   String newTask;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Color taskColor;
   IconData taskIcon;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      newTask = '';
-      taskColor = ColorUtils.defaultColors[0];
-      taskIcon = Icons.work;
+      newTask = widget.taskName;
+      taskColor = widget.color;
+      taskIcon = widget.icon;
     });
   }
 
@@ -41,7 +52,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              'New Category',
+              'Edit Category',
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -66,7 +77,8 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 Container(
                   height: 16.0,
                 ),
-                TextField(
+                TextFormField(
+                  initialValue: newTask,
                   onChanged: (text) {
                     setState(() => newTask = text);
                   },
@@ -113,7 +125,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 heroTag: 'fab_new_card',
                 icon: Icon(Icons.save),
                 backgroundColor: taskColor,
-                label: Text('Create New Card'),
+                label: Text(btnSaveTitle),
                 onPressed: () {
                   if (newTask.isEmpty) {
                     final snackBar = SnackBar(
@@ -124,10 +136,11 @@ class _AddCardScreenState extends State<AddCardScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.addTask(Task(
+                    model.updateTask(Task(
                       newTask,
                       codePoint: taskIcon.codePoint,
-                      color: taskColor.value
+                      color: taskColor.value,
+                      id: widget.taskId
                     ));
                     Navigator.pop(context);
                   }
@@ -140,5 +153,6 @@ class _AddCardScreenState extends State<AddCardScreen> {
     );
   }
 }
+
 // Reason for wraping fab with builder (to get scafold context)
 // https://stackoverflow.com/a/52123080/4934757
