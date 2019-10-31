@@ -4,7 +4,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:todo/model/todo_list_model.dart';
 import 'package:todo/gradient_background.dart';
 import 'package:todo/task_progress_indicator.dart';
-import 'package:todo/page/add_card_screen.dart';
+import 'package:todo/page/add_task_screen.dart';
 import 'package:todo/model/hero_id_model.dart';
 import 'package:todo/model/task_model.dart';
 import 'package:todo/route/scale_route.dart';
@@ -59,7 +59,7 @@ class MyHomePage extends StatefulWidget {
   }
 
   String currentDay(BuildContext context) {
-    
+
     return DateTimeUtils.currentDay;
   }
 
@@ -260,7 +260,7 @@ class AddPageCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddCardScreen(),
+                builder: (context) => AddTaskScreen(),
               ),
             );
           },

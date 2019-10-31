@@ -7,16 +7,16 @@ import 'package:todo/component/iconpicker/icon_picker_builder.dart';
 import 'package:todo/component/colorpicker/color_picker_builder.dart';
 import 'package:todo/utils/color_utils.dart';
 
-class AddCardScreen extends StatefulWidget {
-  AddCardScreen();
+class AddTaskScreen extends StatefulWidget {
+  AddTaskScreen();
 
   @override
   State<StatefulWidget> createState() {
-    return _AddCardScreenState();
+    return _AddTaskScreenState();
   }
 }
 
-class _AddCardScreenState extends State<AddCardScreen> {
+class _AddTaskScreenState extends State<AddTaskScreen> {
   String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Color taskColor;
