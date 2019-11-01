@@ -121,6 +121,12 @@ class DBProvider {
     });
   }
 
+  Future<int> updateTask(Task task) async {
+    final db = await database;
+    return db
+        .update('Task', task.toJson(), where: 'id = ?', whereArgs: [task.id]);
+  }
+
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;

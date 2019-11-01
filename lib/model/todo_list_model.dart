@@ -75,6 +75,7 @@ class TodoListModel extends Model {
     var oldTask = _tasks.firstWhere((it) => it.id == task.id);
     var replaceIndex = _tasks.indexOf(oldTask);
     _tasks.replaceRange(replaceIndex, replaceIndex + 1, [task]);
+    _db.updateTask(task);
     notifyListeners();
   }
 
