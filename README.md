@@ -1,3 +1,4 @@
+[![Codemagic build status](https://api.codemagic.io/apps/5d0f190099fdb70008475b03/5d0f190099fdb70008475b02/status_badge.svg)](https://codemagic.io/apps/5d0f190099fdb70008475b03/5d0f190099fdb70008475b02/latest_build)
 
 <h1 align="center">
   <br>
