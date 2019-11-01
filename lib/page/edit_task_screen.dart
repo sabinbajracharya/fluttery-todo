@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:todo/model/todo_list_model.dart';
+import 'package:todo/scopedmodel/todo_list_model.dart';
 import 'package:todo/model/task_model.dart';
 import 'package:todo/component/iconpicker/icon_picker_builder.dart';
 import 'package:todo/component/colorpicker/color_picker_builder.dart';

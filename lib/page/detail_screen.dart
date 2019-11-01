@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:todo/model/todo_list_model.dart';
-
+import 'package:todo/scopedmodel/todo_list_model.dart';
 import 'package:todo/task_progress_indicator.dart';
 import 'package:todo/component/todo_badge.dart';
 import 'package:todo/model/hero_id_model.dart';
-import 'package:todo/model/todo_model.dart';
+import 'package:todo/model/task_model.dart';
 import 'package:todo/utils/color_utils.dart';
 import 'package:todo/page/add_todo_screen.dart';
 import 'package:todo/page/edit_task_screen.dart';
-import 'package:todo/model/task_model.dart';
 
 class DetailScreen extends StatefulWidget {
   final String taskId;
