@@ -10,7 +10,6 @@
 
 <h4 align="center">A minimal Todo mobile app made using <a href="https://flutter.dev" target="_blank">Flutter</a>.</h4>
 
-
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
@@ -19,10 +18,10 @@
 </p>
 
 <p float="left">
-  <img src="https://itsallwidgets.com/screenshots/app-417.png" width="200" />
-  <img src="https://itsallwidgets.com/screenshots/app-417-1.png" width="200" /> 
-  <img src="https://itsallwidgets.com/screenshots/app-417-2.png" width="200" />
-  <img src="https://itsallwidgets.com/screenshots/app-417-3.png" width="200" />
+  <img src="screenshots/screen01.png" width="200" />
+  <img src="screenshots/screen02.png" width="200" /> 
+  <img src="screenshots/screen03.png" width="200" />
+  <img src="screenshots/screen04.png" width="200" />
 </p>
 
 ## Key Features
