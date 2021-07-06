@@ -4,14 +4,14 @@ class TodoBadge extends StatelessWidget {
   final int codePoint;
   final Color color;
   final String id;
-  final double size;
+  final double? size;
   final Color outlineColor;
 
   TodoBadge({
-    @required this.codePoint,
-    @required this.color,
-    @required this.id,
-    Color outlineColor,
+    required this.codePoint,
+    required this.color,
+    required this.id,
+    Color? outlineColor,
     this.size,
   }) : this.outlineColor = outlineColor ?? Colors.grey.shade200;
 

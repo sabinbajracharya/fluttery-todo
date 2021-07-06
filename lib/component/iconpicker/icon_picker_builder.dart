@@ -9,9 +9,9 @@ class IconPickerBuilder extends StatelessWidget {
   final Color highlightColor;
 
   IconPickerBuilder({
-    @required this.iconData,
-    @required this.action,
-    Color highlightColor,
+    required this.iconData,
+    required this.action,
+    required Color highlightColor,
   }) : this.highlightColor = highlightColor;
 
   @override

@@ -15,8 +15,8 @@ class DetailScreen extends StatefulWidget {
   final HeroId heroIds;
 
   DetailScreen({
-    @required this.taskId,
-    @required this.heroIds,
+    required this.taskId,
+    required this.heroIds,
   });
 
   @override
@@ -25,9 +25,10 @@ class DetailScreen extends StatefulWidget {
   }
 }
 
-class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<Offset> _animation;
+class _DetailScreenState extends State<DetailScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
 
   @override
   void initState() {
@@ -74,16 +75,17 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
         Task _task;
 
         try {
-         _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
+          _task = model.tasks.firstWhere((it) => it.id == widget.taskId);
         } catch (e) {
           return Container(
             color: Colors.white,
           );
         }
 
-        var _todos = model.todos.where((it) => it.parent == widget.taskId).toList();
+        var _todos =
+            model.todos.where((it) => it.parent == widget.taskId).toList();
         var _hero = widget.heroIds;
-        var _color = ColorUtils.getColorFrom(id: _task.color);
+        var _color = ColorUtils.getMaterialColorFrom(id: _task.color);
         var _icon = IconData(_task.codePoint, fontFamily: 'MaterialIcons');
 
         return Theme(
@@ -146,18 +148,18 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                             style: Theme.of(context)
                                 .textTheme
                                 .body1
-                                .copyWith(color: Colors.grey[500]),
+                                ?.copyWith(color: Colors.grey[500]),
                           ),
                         ),
                       ),
                       Container(
                         child: Hero(
-                          tag: 'title_hero_unused',//_hero.titleId,
+                          tag: 'title_hero_unused', //_hero.titleId,
                           child: Text(_task.name,
                               style: Theme.of(context)
                                   .textTheme
                                   .title
-                                  .copyWith(color: Colors.black54)),
+                                  ?.copyWith(color: Colors.black54)),
                         ),
                       ),
                       Spacer(),
@@ -190,8 +192,8 @@ class _DetailScreenState extends State<DetailScreen> with SingleTickerProviderSt
                             contentPadding: EdgeInsets.symmetric(
                                 horizontal: 0, vertical: 8.0),
                             leading: Checkbox(
-                                onChanged: (value) => model.updateTodo(
-                                    todo.copy(isCompleted: value ? 1 : 0)),
+                                onChanged: (value) => model.updateTodo(todo
+                                    .copy(isCompleted: value == true ? 1 : 0)),
                                 value: todo.isCompleted == 1 ? true : false),
                             trailing: IconButton(
                               icon: Icon(Icons.delete_outline),
@@ -255,8 +257,8 @@ class SimpleAlertDialog extends StatelessWidget {
   final Callback onActionPressed;
 
   SimpleAlertDialog({
-    @required this.color,
-    @required this.onActionPressed,
+    required this.color,
+    required this.onActionPressed,
   });
 
   @override

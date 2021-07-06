@@ -12,13 +12,10 @@ class Todo {
   @JsonKey(name: 'completed')
   final int isCompleted;
 
-  Todo(this.name, {
-    @required this.parent,
-    this.isCompleted = 0,
-    String id
-  }): this.id = id ?? Uuid().generateV4();
+  Todo(this.name, {required this.parent, this.isCompleted = 0, String? id})
+      : this.id = id ?? Uuid().generateV4();
 
-  Todo copy({String name, int isCompleted, int id, int parent}) {
+  Todo copy({String? name, int? isCompleted, String? id, String? parent}) {
     return Todo(
       name ?? this.name,
       isCompleted: isCompleted ?? this.isCompleted,
@@ -27,7 +24,7 @@ class Todo {
     );
   }
 
-    /// A necessary factory constructor for creating a new User instance
+  /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$TodoFromJson()` constructor.
   /// The constructor is named after the source class, in this case User.
   factory Todo.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);

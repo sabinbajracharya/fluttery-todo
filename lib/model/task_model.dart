@@ -15,9 +15,9 @@ class Task {
 
   Task(
     this.name, {
-    @required this.color,
-    @required this.codePoint,
-    String id,
+    required this.color,
+    required this.codePoint,
+    String? id,
   }) : this.id = id ?? Uuid().generateV4();
 
   /// A necessary factory constructor for creating a new User instance

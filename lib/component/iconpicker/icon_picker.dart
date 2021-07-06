@@ -995,10 +995,10 @@ class IconPicker extends StatefulWidget {
   ];
 
   IconPicker({
-    @required this.currentIconData,
-    @required this.onIconChanged,
-    Color highlightColor,
-    Color unHighlightColor,
+    required this.currentIconData,
+    required this.onIconChanged,
+    Color? highlightColor,
+    Color? unHighlightColor,
   })  : this.highlightColor = highlightColor ?? Colors.red,
         this.unHighlightColor = unHighlightColor ?? Colors.blueGrey;
 
@@ -1009,7 +1009,7 @@ class IconPicker extends StatefulWidget {
 }
 
 class _IconPickerState extends State<IconPicker> {
-  IconData selectedIconData;
+  late IconData selectedIconData;
 
   @override
   void initState() {
@@ -1041,7 +1041,7 @@ class _IconPickerState extends State<IconPicker> {
                 codePoint: iconData.codePoint,
                 outlineColor: iconData == selectedIconData
                     ? widget.highlightColor
-                    : null,
+                    : widget.unHighlightColor,
                 color: iconData == selectedIconData
                     ? widget.highlightColor
                     : widget.unHighlightColor,

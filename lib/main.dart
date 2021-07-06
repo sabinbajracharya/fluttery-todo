@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -59,7 +59,6 @@ class MyHomePage extends StatefulWidget {
   }
 
   String currentDay(BuildContext context) {
-
     return DateTimeUtils.currentDay;
   }
 
@@ -69,10 +68,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> _animation;
+  late AnimationController _controller;
+  late Animation<double> _animation;
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
-  PageController _pageController;
+  late PageController _pageController;
   int _currentPageIndex = 0;
 
   @override
@@ -152,19 +151,25 @@ class _MyHomePageState extends State<MyHomePage>
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline
-                                    .copyWith(color: Colors.white),
+                                    ?.copyWith(color: Colors.white),
                               ),
                             ),
                             Text(
                               '${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}',
-                              style: Theme.of(context).textTheme.title.copyWith(
-                                  color: Colors.white.withOpacity(0.7)),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .title
+                                  ?.copyWith(
+                                      color: Colors.white.withOpacity(0.7)),
                             ),
                             Container(height: 16.0),
                             Text(
                               'You have ${_todos.where((todo) => todo.isCompleted == 0).length} tasks to complete',
-                              style: Theme.of(context).textTheme.body1.copyWith(
-                                  color: Colors.white.withOpacity(0.7)),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  ?.copyWith(
+                                      color: Colors.white.withOpacity(0.7)),
                             ),
                             Container(
                               height: 16.0,
@@ -191,11 +196,12 @@ class _MyHomePageState extends State<MyHomePage>
                               print(
                                   "ScrollNotification = ${_pageController.page}");
                               var currentPage =
-                                  _pageController.page.round().toInt();
+                                  _pageController.page?.round().toInt() ?? 0;
                               if (_currentPageIndex != currentPage) {
                                 setState(() => _currentPageIndex = currentPage);
                               }
                             }
+                            return true;
                           },
                           child: PageView.builder(
                             controller: _pageController,
@@ -242,7 +248,7 @@ class _MyHomePageState extends State<MyHomePage>
 class AddPageCard extends StatelessWidget {
   final Color color;
 
-  const AddPageCard({Key key, this.color = Colors.black}) : super(key: key);
+  const AddPageCard({Key? key, this.color = Colors.black}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -302,12 +308,12 @@ class TaskCard extends StatelessWidget {
   final TaskGetter<Task, int> getTaskCompletionPercent;
 
   TaskCard({
-    @required this.backdropKey,
-    @required this.color,
-    @required this.task,
-    @required this.getTotalTodos,
-    @required this.getHeroIds,
-    @required this.getTaskCompletionPercent,
+    required this.backdropKey,
+    required this.color,
+    required this.task,
+    required this.getTotalTodos,
+    required this.getHeroIds,
+    required this.getTaskCompletionPercent,
   });
 
   @override
@@ -315,9 +321,9 @@ class TaskCard extends StatelessWidget {
     var heroIds = getHeroIds(task);
     return GestureDetector(
       onTap: () {
-        final RenderBox renderBox =
-            backdropKey.currentContext.findRenderObject();
-        var backDropHeight = renderBox.size.height;
+        final RenderBox? renderBox =
+            backdropKey.currentContext?.findRenderObject() as RenderBox;
+        var backDropHeight = renderBox?.size.height ?? 0;
         var bottomOffset = 60.0;
         var horizontalOffset = 52.0;
         var topOffset = MediaQuery.of(context).size.height - backDropHeight;
@@ -373,7 +379,7 @@ class TaskCard extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .body1
-                        .copyWith(color: Colors.grey[500]),
+                        ?.copyWith(color: Colors.grey[500]),
                   ),
                 ),
               ),
@@ -384,7 +390,7 @@ class TaskCard extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .title
-                          .copyWith(color: Colors.black54)),
+                          ?.copyWith(color: Colors.black54)),
                 ),
               ),
               Spacer(),

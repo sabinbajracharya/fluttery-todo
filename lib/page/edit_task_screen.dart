@@ -13,10 +13,10 @@ class EditTaskScreen extends StatefulWidget {
   final IconData icon;
 
   EditTaskScreen({
-    @required this.taskId
-  , @required this.taskName
-  , @required this.color
-  , @required this.icon
+    required this.taskId,
+    required this.taskName,
+    required this.color,
+    required this.icon,
   });
 
   @override
@@ -26,21 +26,20 @@ class EditTaskScreen extends StatefulWidget {
 }
 
 class _EditCardScreenState extends State<EditTaskScreen> {
-  final  btnSaveTitle = "Save Changes";
-  String newTask;
-  Color taskColor;
-  IconData taskIcon;
+  late String taskName;
+  late Color taskColor;
+  late IconData taskIcon;
+
+  final btnSaveTitle = "Save Changes";
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      newTask = widget.taskName;
-      taskColor = widget.color;
-      taskIcon = widget.icon;
-    });
+    taskName = widget.taskName;
+    taskColor = widget.color;
+    taskIcon = widget.icon;
   }
 
   @override
@@ -53,34 +52,44 @@ class _EditCardScreenState extends State<EditTaskScreen> {
           appBar: AppBar(
             title: Text(
               'Edit Category',
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
             centerTitle: true,
             elevation: 0,
-            iconTheme: IconThemeData(color: Colors.black26),
+            iconTheme: IconThemeData(
+              color: Colors.black26,
+            ),
             brightness: Brightness.light,
             backgroundColor: Colors.white,
           ),
           body: Container(
             constraints: BoxConstraints.expand(),
-            padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 36.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: 36.0,
+              vertical: 36.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Category will help you group related task!',
                   style: TextStyle(
-                      color: Colors.black38,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16.0),
+                    color: Colors.black38,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 16.0,
+                  ),
                 ),
                 Container(
                   height: 16.0,
                 ),
                 TextFormField(
-                  initialValue: newTask,
+                  initialValue: taskName,
                   onChanged: (text) {
-                    setState(() => newTask = text);
+                    setState(
+                      () => taskName = text,
+                    );
                   },
                   cursorColor: taskColor,
                   autofocus: true,
@@ -101,17 +110,21 @@ class _EditCardScreenState extends State<EditTaskScreen> {
                 Row(
                   children: [
                     ColorPickerBuilder(
-                        color: taskColor,
-                        onColorChanged: (newColor) =>
-                            setState(() => taskColor = newColor)),
+                      color: taskColor,
+                      onColorChanged: (newColor) => setState(
+                        () => taskColor = newColor,
+                      ),
+                    ),
                     Container(
                       width: 22.0,
                     ),
                     IconPickerBuilder(
-                        iconData: taskIcon,
-                        highlightColor: taskColor,
-                        action: (newIcon) =>
-                            setState(() => taskIcon = newIcon)),
+                      iconData: taskIcon,
+                      highlightColor: taskColor,
+                      action: (newIcon) => setState(
+                        () => taskIcon = newIcon,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -127,7 +140,7 @@ class _EditCardScreenState extends State<EditTaskScreen> {
                 backgroundColor: taskColor,
                 label: Text(btnSaveTitle),
                 onPressed: () {
-                  if (newTask.isEmpty) {
+                  if (taskName.isEmpty) {
                     final snackBar = SnackBar(
                       content: Text(
                           'Ummm... It seems that you are trying to add an invisible task which is not allowed in this realm.'),
@@ -136,12 +149,14 @@ class _EditCardScreenState extends State<EditTaskScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.updateTask(Task(
-                      newTask,
-                      codePoint: taskIcon.codePoint,
-                      color: taskColor.value,
-                      id: widget.taskId
-                    ));
+                    model.updateTask(
+                      Task(
+                        taskName,
+                        codePoint: taskIcon.codePoint,
+                        color: taskColor.value,
+                        id: widget.taskId,
+                      ),
+                    );
                     Navigator.pop(context);
                   }
                 },

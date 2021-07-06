@@ -6,7 +6,7 @@ class TaskProgressIndicator extends StatelessWidget {
 
   final _height = 3.0;
 
-  TaskProgressIndicator({@required this.color, @required this.progress});
+  TaskProgressIndicator({required this.color, required this.progress});
 
   @override
   Widget build(BuildContext context) {

@@ -17,19 +17,17 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> {
-  String newTask;
+  late String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Color taskColor;
-  IconData taskIcon;
+  late Color taskColor;
+  late IconData taskIcon;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      newTask = '';
-      taskColor = ColorUtils.defaultColors[0];
-      taskIcon = Icons.work;
-    });
+    newTask = '';
+    taskColor = ColorUtils.defaultColors[0];
+    taskIcon = Icons.work;
   }
 
   @override
@@ -124,11 +122,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.addTask(Task(
-                      newTask,
-                      codePoint: taskIcon.codePoint,
-                      color: taskColor.value
-                    ));
+                    model.addTask(Task(newTask,
+                        codePoint: taskIcon.codePoint, color: taskColor.value));
                     Navigator.pop(context);
                   }
                 },
