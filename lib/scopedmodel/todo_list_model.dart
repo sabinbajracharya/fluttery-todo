@@ -14,14 +14,16 @@ class TodoListModel extends Model {
   var _db = DBProvider.db;
   List<Todo> get todos => _todos.toList();
   List<Task> get tasks => _tasks.toList();
-  int getTaskCompletionPercent(Task task) => _taskCompletionPercentage[task.id];
-  int getTotalTodosFrom(Task task) => todos.where((it) => it.parent == task.id).length;
+  int getTaskCompletionPercent(Task task) =>
+      _taskCompletionPercentage[task.id] ?? 0;
+  int getTotalTodosFrom(Task task) =>
+      todos.where((it) => it.parent == task.id).length;
   bool get isLoading => _isLoading;
 
   bool _isLoading = false;
   List<Task> _tasks = [];
   List<Todo> _todos = [];
-  Map<String, int> _taskCompletionPercentage =  Map();
+  Map<String, int> _taskCompletionPercentage = Map();
 
   static TodoListModel of(BuildContext context) =>
       ScopedModel.of<TodoListModel>(context);
@@ -106,7 +108,7 @@ class TodoListModel extends Model {
 
   _syncJob(Todo todo) {
     _calcTaskCompletionPercent(todo.parent);
-   // _syncTodoToDB();
+    // _syncTodoToDB();
   }
 
   void _calcTaskCompletionPercent(String taskId) {
@@ -117,7 +119,8 @@ class TodoListModel extends Model {
       _taskCompletionPercentage[taskId] = 0;
     } else {
       var totalCompletedTodos = todos.where((it) => it.isCompleted == 1).length;
-     _taskCompletionPercentage[taskId] = (totalCompletedTodos / totalTodos * 100).toInt();
+      _taskCompletionPercentage[taskId] =
+          (totalCompletedTodos / totalTodos * 100).toInt();
     }
     // return todos.fold(0, (total, todo) => todo.isCompleted ? total + scoreOfTask : total);
   }

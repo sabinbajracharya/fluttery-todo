@@ -12,8 +12,8 @@ class AddTodoScreen extends StatefulWidget {
   final HeroId heroIds;
 
   AddTodoScreen({
-    @required this.taskId,
-    @required this.heroIds,
+    required this.taskId,
+    required this.heroIds,
   });
 
   @override
@@ -23,15 +23,13 @@ class AddTodoScreen extends StatefulWidget {
 }
 
 class _AddTodoScreenState extends State<AddTodoScreen> {
-  String newTask;
+  late String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      newTask = '';
-    });
+    newTask = '';
   }
 
   @override

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/block_picker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:todo/utils/color_utils.dart';
 
@@ -7,7 +7,7 @@ class ColorPickerBuilder extends StatelessWidget {
   final Color color;
   final ValueChanged<Color> onColorChanged;
 
-  ColorPickerBuilder({@required this.color, @required this.onColorChanged});
+  ColorPickerBuilder({required this.color, required this.onColorChanged});
 
   @override
   Widget build(BuildContext context) {
