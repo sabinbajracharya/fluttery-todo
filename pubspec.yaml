@@ -19,12 +19,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  scoped_model: ^1.1.0
+  scoped_model: ^2.0.0-nullsafety.0
   # objectdb: ^1.0.5
-  path_provider: ^2.0.2
+  path_provider: ^2.0.9
   json_annotation: ^4.0.1
   sqflite: ^2.0.0+3
-  flutter_colorpicker: ^0.4.0
+  flutter_colorpicker: ^1.0.3
   intl: ^0.17.0
   # firebase_analytics: ^2.0.2+1
   flutter_markdown: ^0.6.2

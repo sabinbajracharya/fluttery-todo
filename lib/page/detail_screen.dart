@@ -71,7 +71,7 @@ class _DetailScreenState extends State<DetailScreen>
   Widget build(BuildContext context) {
     _controller.forward();
     return ScopedModelDescendant<TodoListModel>(
-      builder: (BuildContext context, Widget child, TodoListModel model) {
+      builder: (BuildContext context, Widget? child, TodoListModel model) {
         Task _task;
 
         try {
@@ -147,7 +147,7 @@ class _DetailScreenState extends State<DetailScreen>
                             "${model.getTotalTodosFrom(_task)} Task",
                             style: Theme.of(context)
                                 .textTheme
-                                .body1
+                                .bodyText1
                                 ?.copyWith(color: Colors.grey[500]),
                           ),
                         ),
@@ -158,7 +158,7 @@ class _DetailScreenState extends State<DetailScreen>
                           child: Text(_task.name,
                               style: Theme.of(context)
                                   .textTheme
-                                  .title
+                                  .subtitle1
                                   ?.copyWith(color: Colors.black54)),
                         ),
                       ),
