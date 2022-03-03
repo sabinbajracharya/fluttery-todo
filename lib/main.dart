@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         textTheme: TextTheme(
-          headline: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w400),
-          title: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500),
-          body1: TextStyle(
+          headline1: TextStyle(fontSize: 32.0, fontWeight: FontWeight.w400),
+          subtitle1: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w500),
+          bodyText1: TextStyle(
             fontSize: 14.0,
             fontFamily: 'Hind',
           ),
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<TodoListModel>(
-        builder: (BuildContext context, Widget child, TodoListModel model) {
+        builder: (BuildContext context, Widget? child, TodoListModel model) {
       var _isLoading = model.isLoading;
       var _tasks = model.tasks;
       var _todos = model.todos;
@@ -150,7 +150,7 @@ class _MyHomePageState extends State<MyHomePage>
                                 '${widget.currentDay(context)}',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .headline
+                                    .headline1
                                     ?.copyWith(color: Colors.white),
                               ),
                             ),
@@ -158,7 +158,7 @@ class _MyHomePageState extends State<MyHomePage>
                               '${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}',
                               style: Theme.of(context)
                                   .textTheme
-                                  .title
+                                  .subtitle1
                                   ?.copyWith(
                                       color: Colors.white.withOpacity(0.7)),
                             ),
@@ -167,7 +167,7 @@ class _MyHomePageState extends State<MyHomePage>
                               'You have ${_todos.where((todo) => todo.isCompleted == 0).length} tasks to complete',
                               style: Theme.of(context)
                                   .textTheme
-                                  .body1
+                                  .bodyText1
                                   ?.copyWith(
                                       color: Colors.white.withOpacity(0.7)),
                             ),
@@ -378,7 +378,7 @@ class TaskCard extends StatelessWidget {
                     "${getTotalTodos(task)} Task",
                     style: Theme.of(context)
                         .textTheme
-                        .body1
+                        .bodyText1
                         ?.copyWith(color: Colors.grey[500]),
                   ),
                 ),
@@ -389,7 +389,7 @@ class TaskCard extends StatelessWidget {
                   child: Text(task.name,
                       style: Theme.of(context)
                           .textTheme
-                          .title
+                          .subtitle1
                           ?.copyWith(color: Colors.black54)),
                 ),
               ),
