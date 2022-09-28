@@ -282,7 +282,7 @@ class SimpleAlertDialog extends StatelessWidget {
                 ),
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Delete'),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -290,9 +290,9 @@ class SimpleAlertDialog extends StatelessWidget {
                     onActionPressed();
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('Cancel'),
-                  textColor: Colors.grey,
+                  style: TextButton.styleFrom(foregroundColor: Colors.grey),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
