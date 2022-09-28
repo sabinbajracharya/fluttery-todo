@@ -85,13 +85,13 @@ class DBProvider {
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       print("DBProvider:: onCreate()");
-      await db.execute("CREATE TABLE Task ("
+      await db.execute("CREATE TABLE IF NOT EXISTS Task ("
           "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "color INTEGER,"
           "code_point INTEGER"
           ")");
-      await db.execute("CREATE TABLE Todo ("
+      await db.execute("CREATE TABLE IF NOT EXISTS Todo ("
           "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "parent TEXT,"
