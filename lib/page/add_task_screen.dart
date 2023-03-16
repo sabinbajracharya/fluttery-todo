@@ -119,7 +119,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           'Ummm... It seems that you are trying to add an invisible task which is not allowed in this realm.'),
                       backgroundColor: taskColor,
                     );
-                    Scaffold.of(context).showSnackBar(snackBar);
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
                     model.addTask(Task(newTask,

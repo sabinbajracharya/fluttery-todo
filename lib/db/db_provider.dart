@@ -6,6 +6,8 @@ import 'dart:io';
 
 import 'package:todo/model/todo_model.dart';
 import 'package:todo/model/task_model.dart';
+import 'package:sqflite_common/sqlite_api.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DBProvider {
   static Database? _database;
@@ -63,16 +65,33 @@ class DBProvider {
 
   initDB() async {
     String path = await _dbPath;
-    return await openDatabase(path, version: 1, onOpen: (db) {},
-        onCreate: (Database db, int version) async {
-      print("DBProvider:: onCreate()");
-      await db.execute("CREATE TABLE Task ("
+    if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      sqfliteFfiInit();
+      var db = await databaseFactoryFfi.openDatabase(path);
+      await db.execute("CREATE TABLE IF NOT EXISTS Task ("
           "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "color INTEGER,"
           "code_point INTEGER"
           ")");
-      await db.execute("CREATE TABLE Todo ("
+      await db.execute("CREATE TABLE IF NOT EXISTS Todo ("
+          "id TEXT PRIMARY KEY,"
+          "name TEXT,"
+          "parent TEXT,"
+          "completed INTEGER NOT NULL DEFAULT 0"
+          ")");
+      return db;
+    }
+    return await openDatabase(path, version: 1, onOpen: (db) {},
+        onCreate: (Database db, int version) async {
+      print("DBProvider:: onCreate()");
+      await db.execute("CREATE TABLE IF NOT EXISTS Task ("
+          "id TEXT PRIMARY KEY,"
+          "name TEXT,"
+          "color INTEGER,"
+          "code_point INTEGER"
+          ")");
+      await db.execute("CREATE TABLE IF NOT EXISTS Todo ("
           "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "parent TEXT,"

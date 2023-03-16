@@ -137,7 +137,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                           'Ummm... It seems that you are trying to add an invisible task which is not allowed in this realm.'),
                       backgroundColor: _color,
                     );
-                    Scaffold.of(context).showSnackBar(snackBar);
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
                     model.addTodo(Todo(
